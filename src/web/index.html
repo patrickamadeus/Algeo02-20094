@@ -45,7 +45,21 @@
           <div class="drop-zone__prompt">Drop file here / click to upload</div>
           <input type="file" name="imagereport" class="drop-zone__input" id="reportFile" />
         </div>
-        <button type="submit" form="reportImage" data-bs-toggle="modal" data-bs-target="#terimakasih">Report</button>
+        <div style="width: 100%; display: table;">
+          <div style="display: table-row">
+
+              <div style="width: 300px; display: table-cell;">
+                <label for="compressionrate">Compression Rate (%) :</label>
+                <input type="range" min="1" max="100" value="50" class="compressionrate" id="slider">
+                <p>Value: <span id="rateShow"></span></p>
+              </div>
+
+              <div style="display: table-cell; width : 200px">
+                <button type="submit" form="reportImage" data-bs-toggle="modal" data-bs-target="#terimakasih">Upload</button>
+              </div>
+
+          </div>
+        </div>
       </form>
     </div>
 
@@ -63,9 +77,9 @@
     <div id="terimakasih" class="modal fade" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-container modal-content">
-          <p>Terima kasih telah melaporkan konten hoaks</p>
+          <p>Image Successfully Uploaded!</p>
           <div>
-            <button id="Kembali" class="button-scan" data-bs-dismiss="modal">Kembali</button>
+            <button id="Kembali" class="button-scan" data-bs-dismiss="modal">Back</button>
           </div>
         </div>
       </div>
@@ -73,6 +87,15 @@
 
     <script src="index.js"></script> <!-- BAGIAN JS BELOM-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script>
+      var slider = document.getElementById("slider");
+      var output = document.getElementById("rateShow");
+      output.innerHTML = slider.value; 
+
+      slider.oninput = function() {
+        output.innerHTML = this.value;
+        }
+  </script>
   </body>
 
   <!-- Footer -->
