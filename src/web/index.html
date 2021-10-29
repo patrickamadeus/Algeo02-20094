@@ -12,28 +12,26 @@
     <link rel="stylesheet" href="index.css" />
 
     <!-- Fonts -->
-    <link rel="shortcut icon" href="#" />
+    <link rel="shortcut icon" href="weblogo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Proza+Libre:wght@500;600;700&display=swap" rel="stylesheet" />
 
-    <title>Baso - Report Hoax</title>
+    <title>Image Compressor</title>
   </head>
 
   <body>
     <!-- Navigation Bar -->
     <nav>
+      <h2 id = "nav-text">SVD Image Compressor</h2>
       <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Scan</a></li>
-        <li><a href="#">Report</a></li>
-        <li><a href="#" class="download">Download</a></li>
+        <li><a href="#" class="download">About Us</a></li>
       </ul>
     </nav>
 
     <!-- Header/Judul -->
     <header>
-      <h1>IMAGE COMPRESSION</h1>
+      <h1>Algeo20094</h1>
     </header>
 
     <!-- Report Gambar -->
@@ -45,21 +43,13 @@
           <div class="drop-zone__prompt">Drop file here / click to upload</div>
           <input type="file" name="imagereport" class="drop-zone__input" id="reportFile" />
         </div>
-        <div style="width: 100%; display: table;">
-          <div style="display: table-row">
-
-              <div style="width: 300px; display: table-cell;">
-                <label for="compressionrate">Compression Rate (%) :</label>
-                <input type="range" min="1" max="100" value="50" class="compressionrate" id="slider">
-                <p>Value: <span id="rateShow"></span></p>
-              </div>
-
-              <div style="display: table-cell; width : 200px">
-                <button type="submit" form="reportImage" data-bs-toggle="modal" data-bs-target="#terimakasih">Upload</button>
-              </div>
-
+          <div id = "compressionSlider">
+            <label for="compressionrate">Compression Rate (%) :</label>
+            <input type="range" min="1" max="100" value="50" class="compressionrate" id="slider">
+            <p>Value: <span id="rateShow"></span></p>
           </div>
-        </div>
+          
+          <button type="submit" form="reportImage" data-bs-toggle="modal" data-bs-target="#terimakasih">Upload</button>
       </form>
     </div>
 

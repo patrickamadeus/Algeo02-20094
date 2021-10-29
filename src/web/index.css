@@ -14,12 +14,12 @@ body {
   nav {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     padding: 5px 30px;
-    background-color: #292929;
     z-index: 1;
     width: 100%;
     top: 0;
+    background:linear-gradient(45deg, grey 50%, #292929 50%); 
   }
   
   nav ul {
@@ -138,7 +138,7 @@ body {
     text-align: center;
   }
   
-  .image-report form button {
+  /* .image-report form button {
     text-align: center;
     color: #fff;
     background: #747474;
@@ -150,7 +150,7 @@ body {
     border-radius: 10px;
     transition: all 0.2s ease;
     outline: none;
-  }
+  } */
   
   .image-report form button:hover {
     background: #363636;
@@ -163,7 +163,7 @@ body {
   }
   
   /* Report link 8 */
-  .link-report {
+  /* .link-report {
     margin: 7% 4% 10% 4%;
     text-align: left;
   }
@@ -200,7 +200,7 @@ body {
   
   .link-report form button:active {
     border: 0;
-  }
+  } */
   
   /* Modal */
   .modal-container {
@@ -291,17 +291,32 @@ body {
   
 
 
+  /*Section Slider  + Upload Button */
 
 
-.container {
-    /* background-color:#2E4272; */
-    display:flex;
+.image-report form button {
+  float: right;
+  text-align: center;
+  color: #fff;
+  background: #747474;
+  border: none;
+  width: 120px;
+  height: 45px;
+  margin : 15px 3cm 0 0;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  outline: none;
 }
-.fixed {
-    /* background-color:#4F628E; */
-    width: 0;
+
+#compressionSlider {
+  width : 25%;
+  float: left;
+  margin : 20px 0 0 20cm;
 }
-.flex-item {
-    /* background-color:#7887AB; */
-    flex-grow: 1;
+
+#nav-text {
+  color: white;
+  /* position: relative; */
+  float : left;
+  margin: 10px 0 0 10px;
 }
