@@ -80,7 +80,6 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
     form.append("file", inputFiles.files[0]);
   
     try {
-      // Check hoax dahulu
       let response = await fetch("https://api.detax.org/detax/v1/scan_image", {
         method: "POST",
         body: form,
@@ -104,7 +103,6 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
         response = await response.json();
         console.log(response);
       } else {
-        // Kalau tidak hoax jangan kirim report
         console.log("Ini fakta");
       }
     } catch (error) {
@@ -112,40 +110,40 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
     }
   };
   
-  const formText = document.getElementById("reportText");
-  const formTextContent = document.getElementById("formReportText");
-  formText.onsubmit = async function (event) {
-    event.preventDefault();
-    const body = JSON.stringify({
-      text: formTextContent.value,
-      detail: 1,
-    });
+  // const formText = document.getElementById("reportText");
+  // const formTextContent = document.getElementById("formReportText");
+  // formText.onsubmit = async function (event) {
+  //   event.preventDefault();
+  //   const body = JSON.stringify({
+  //     text: formTextContent.value,
+  //     detail: 1,
+  //   });
   
-    try {
-      let response = await fetch("https://api.detax.org/detax/v1/scan_text", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: body,
-      });
-      response = await response.json();
+  //   try {
+  //     let response = await fetch("https://api.detax.org/detax/v1/scan_text", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: body,
+  //     });
+  //     response = await response.json();
   
-      if (response.result.scan_result !== 1) {
-        response = await fetch("https://api.detax.org/detax/v1/report/text", {
-          method: "POST",
-          body: JSON.stringify({
-            text: formTextContent.value,
-            classification: response.result.scan_result,
-            description: "",
-            refs: [],
-          }),
-        });
-        response = await response.json();
-        console.log(response);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     if (response.result.scan_result !== 1) {
+  //       response = await fetch("https://api.detax.org/detax/v1/report/text", {
+  //         method: "POST",
+  //         body: JSON.stringify({
+  //           text: formTextContent.value,
+  //           classification: response.result.scan_result,
+  //           description: "",
+  //           refs: [],
+  //         }),
+  //       });
+  //       response = await response.json();
+  //       console.log(response);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   

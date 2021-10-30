@@ -24,45 +24,32 @@
     <!-- Navigation Bar -->
     <nav>
       <h2 id = "nav-text">SVD Image Compressor</h2>
-      <ul>
-        <li><a href="#" class="download">About Us</a></li>
-      </ul>
     </nav>
 
-    <!-- Header/Judul -->
-    <header>
-      <h1>Algeo20094</h1>
-    </header>
-
-    <!-- Report Gambar -->
+    <!-- Upload Image Section -->
     <div class="image-report">
       <h5><strong>Upload Image</strong></h5>
-      <br />
-      <form id="reportImage" enctype="multipart/form-data" method="POST">
-        <div class="drop-zone">
-          <div class="drop-zone__prompt">Drop file here / click to upload</div>
-          <input type="file" name="imagereport" class="drop-zone__input" id="reportFile" />
-        </div>
+      <br/>
+
+      <div class = "main-text-side">
+        Algeo20094
+      </div>
+      <div class = "form-side">
+        <form id="reportImage" enctype="multipart/form-data" method="POST">
+          <div class="drop-zone">
+            <div class="drop-zone__prompt">Drop image here / click to upload</div>
+            <input type="file" name="imagereport" class="drop-zone__input" id="reportFile" />
+          </div>
           <div id = "compressionSlider">
             <label for="compressionrate">Compression Rate (%) :</label>
             <input type="range" min="1" max="100" value="50" class="compressionrate" id="slider">
             <p>Value: <span id="rateShow"></span></p>
           </div>
-          
-          <button type="submit" form="reportImage" data-bs-toggle="modal" data-bs-target="#terimakasih">Upload</button>
-      </form>
+            
+            <button type="submit" form="reportImage" data-bs-toggle="modal" data-bs-target="#terimakasih">Upload</button>
+        </form>
+      </div>
     </div>
-
-    <!-- Report Link -->
-    <!-- <div class="link-report">
-      <form id="reportText">
-        <label for="linkreport"
-          ><h5><strong>Laporkan artikel</strong></h5></label
-        ><br /><br />
-        <textarea id="formReportText" name="linkreport" class="teks-report form-control" placeholder="Input text to report"></textarea>
-        <button type="submit" data-bs-toggle="modal" data-bs-target="#terimakasih">Report</button>
-      </form>
-    </div> -->
 
     <div id="terimakasih" class="modal fade" tabindex="-1">
       <div class="modal-dialog">
@@ -73,6 +60,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div id = "result">
+      <!-- <h2>Compression Result</h2> -->
     </div>
 
     <script src="index.js"></script> <!-- BAGIAN JS BELOM-->
@@ -90,7 +81,7 @@
 
   <!-- Footer -->
   <footer>
-    <a href="#">Algeo20094</a>
-    <p>Copyright (C) 2021 Algeo20094</p>
+    <div style="font-size: 0.75rem;">Saul Sayers, Patrick Amadeus Irawan, Rania Dwi Fadhilah</div>
+    <div style="font: size 1rem;"><strong>© Algeo20094 2021</strong></div>
   </footer>
 </html>

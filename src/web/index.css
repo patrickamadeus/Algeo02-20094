@@ -2,11 +2,10 @@ body {
     padding: 0;
     margin: 0;
     font-family: "Proza Libre", sans-serif;
-    background-image: url("../img/background1.png");
+    background-image: url("background-network.jpg");
     background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
+    background-position: 100px 20px;
+    background-size: contain;
     text-align: center;
   }
   
@@ -14,12 +13,13 @@ body {
   nav {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     padding: 5px 30px;
     z-index: 1;
     width: 100%;
     top: 0;
-    background:linear-gradient(45deg, grey 50%, #292929 50%); 
+    /* background:linear-gradient(45deg, grey 50%, #292929 50%);  */
+    background-color: #292929;
   }
   
   nav ul {
@@ -94,6 +94,7 @@ body {
   .image-report h5 {
     text-align: right;
     margin-right: 8cm;
+    margin-top: 1cm;
   }
   
   .drop-zone {
@@ -109,6 +110,7 @@ body {
     color: #9b9b9b;
     border: 3px dashed #afafaf;
     border-radius: 15px;
+    background-color: white;
   }
   
   .drop-zone__input {
@@ -138,20 +140,6 @@ body {
     text-align: center;
   }
   
-  /* .image-report form button {
-    text-align: center;
-    color: #fff;
-    background: #747474;
-    border: none;
-    width: 120px;
-    height: 45px;
-    margin-top: 10px;
-    margin-left: 27.5cm;
-    border-radius: 10px;
-    transition: all 0.2s ease;
-    outline: none;
-  } */
-  
   .image-report form button:hover {
     background: #363636;
     box-shadow: 5px 10px 30px rgba(73, 73, 73, 0.911);
@@ -161,46 +149,6 @@ body {
   .image-report form button:active {
     border: 0;
   }
-  
-  /* Report link 8 */
-  /* .link-report {
-    margin: 7% 4% 10% 4%;
-    text-align: left;
-  }
-  
-  .teks-report {
-    float: left;
-    position: relative;
-    width: 85%;
-    height: 50px;
-    border: 3px solid #8fbfff;
-    border-radius: 10px;
-    padding: 1% 0% 0% 1%;
-  }
-  
-  .link-report form button {
-    float: right;
-    margin: 0;
-    color: #fff;
-    background: #4a4cf6;
-    border: none;
-    width: 120px;
-    height: 45px;
-    border-radius: 10px;
-    margin-left: 2%;
-    transition: all 0.2s ease;
-    outline: none;
-  }
-  
-  .link-report form button:hover {
-    background: #04054d;
-    box-shadow: 5px 10px 30px rgba(100, 143, 224, 0.911);
-    transition: all ease 0.4s;
-  }
-  
-  .link-report form button:active {
-    border: 0;
-  } */
   
   /* Modal */
   .modal-container {
@@ -249,12 +197,16 @@ body {
     padding: 0px 5%;
     border-top: 2px solid rgba(167, 167, 167, 0.2);
     background-color: #292929;
+    position: absolute;
+    bottom: 0;
+    padding: 0 20px 0 20px;
   }
   
-  footer a,
-  footer p {
+ footer div{
+    /* font-size: 0.75rem; */
     text-decoration: none;
-    color: rgb(177, 177, 177);
+    color: rgba(189, 189, 189, 0.911);
+    padding : 10px;
   }
   
   /* Responsive */
@@ -293,6 +245,12 @@ body {
 
   /*Section Slider  + Upload Button */
 
+.main-text-side {
+  padding:30px;
+  float:left;
+  width: 30%;
+  font-size: 3.5rem;
+}
 
 .image-report form button {
   float: right;
@@ -316,7 +274,6 @@ body {
 
 #nav-text {
   color: white;
-  /* position: relative; */
-  float : left;
   margin: 10px 0 0 10px;
+  padding: 10px;
 }
