@@ -24,14 +24,6 @@ def convertPNGtoJPG(filename) :
         awal.save('{}.jpg'.format(kiri))
     else :
         print("awalnya bukan png")
-        
-# Fungsi membuka gambarnya, trus misahin jadi matrix merah hijau biru.
-# Trus ngereturn gambar yang udah di open, sama matrix merah hijau biru.
-def bukagambar(filename):
-    gambarasli = Image.open(filename)
-    gambarmatrix = numpy.array(gambarasli)
-
-    return [gambarasli, gambarmatrix]
 
 # ini buat ngedekomposisi dulu matriksnya jadi kiri tengah kanan 
 # trus matriksnya dikompres sampe sebanyak rasio*banyaknya singular values
@@ -53,7 +45,7 @@ def kompresmatriks(matriksawal, rasio):
         print(k)
         kirikalitengah = numpy.matmul(kiri[:, 0:k], numpy.diag(tengah)[0:k, 0:k])
         matrikshasil[:,:,warna] = numpy.matmul(kirikalitengah, kanan[0:k, :])
-    matrikshasil = matrikshasil.astype('uint8')
+    matrikshasil = matrikshasil.astype('uint8') #INI SOALNYA PIL GABISA BACA ELEMEN FLOAT, DICONVERT DULU JADI UNSIGNED
     return matrikshasil
 
 
@@ -62,7 +54,9 @@ waktuawal = time.time()
 
 print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
 
-gambarasli, matriksgambar = bukagambar('../../test/sasugee.png') #UNTUK NGELOAD GAMBARNYA JADI IMAGE DAN MATRIKS PER WARNA
+gambarasli = Image.open('../../test/sasugee.png') # untuk buka gambarnya pake PIL
+
+matriksgambar = numpy.array(gambarasli) # convert gambarnya jadi matriks
 
 rasio = float(input("Masukkan rasio yang anda inginkan: ")) #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
 
