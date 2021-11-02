@@ -1,19 +1,14 @@
 import numpy 
+from PIL import Image
 
-matriks = numpy.arange(24).reshape((2, 4,3))
+#matriks = numpy.arange(12).reshape((3,4))
 
-print(matriks)
+#print(matriks)
 
-kiri, tengah, kanan = numpy.linalg.svd(matriks[:,:,1])
+#kiri, tengah, kanan = numpy.linalg.svd(matriks)
 
-print(kiri)
-print(len(tengah))
-print(kanan)
+#print(len(tengah))
 
-i=0
-while (i < len(tengah)) :
-        if abs(tengah[i]) >= 1e-8 :
-            i += 1
-        else :
-            break #disini sudah didapat banyaknya singular values yakni i
-print(i)
+gambarasli = Image.open('./temp.png') # untuk buka gambarnya pake PIL
+matriksgambar = numpy.array(gambarasli) # convert gambarnya jadi matriks
+print(matriksgambar[:,:,1])

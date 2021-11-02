@@ -25,25 +25,30 @@ def convertPNGtoJPG(filename) :
     else :
         print("awalnya bukan png")
 
-# ini buat ngedekomposisi dulu matriksnya jadi kiri tengah kanan 
-# trus matriksnya dikompres sampe sebanyak rasio*banyaknya singular values
-# trus dikali lagi matriksnya jadi satu kesatuan
-def kompresmatriks(matriksawal, rasio):
-    matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], matriksawal.shape[2]))
+# TLDR : ini fungsinya ngambil semua gambar, dijadiin matriks, pake SVD, singular values dari matriks nya cuman dipake beberapa bergantung rasio
+# Trus matriksnya dikaliin lagi, diconvert balik jadi gambar. Trus ngereturn gambar hasil, banyaknya singular values, singular values digunakan
+def kompresgambar(gambarawal, rasio):
+    matriksawal = numpy.array(gambarawal)  # convert gambarnya jadi matriks
+    matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], matriksawal.shape[2])) #Inisialisasi matriks kosong sebagai hasilnya
     for warna in range(3): 
         kiri, tengah, kanan = numpy.linalg.svd(matriksawal[:,:,warna]) # ini dekomposisi jadi kiri tengah kanan
         #MENCARI DULU ADA BERAPA BANYAK SINGULAR VALUENYA MATRIKS
         i = 0
-        while (i < len(tengah)) : # KENAPA DICARI DULU? KARENA KADANG KADANG SVD ITU GA AKURAT, MISALNYA HARUSNYA 0 DIA TULIS 10^-16
+        sudah = False
+        while (i < len(tengah) and (not sudah)) : # KENAPA DICARI DULU? KARENA KADANG KADANG SVD ITU GA AKURAT, MISALNYA HARUSNYA 0 DIA TULIS 10^-16
             if abs(tengah[i]) >= 1e-8 :
                 i += 1
             else :
-                break #disini sudah didapat banyaknya singular values yakni i
-        k = round((1-rasio)*i)
-        kirikalitengah = numpy.matmul(kiri[:, 0:k], numpy.diag(tengah)[0:k, 0:k])
-        matrikshasil[:,:,warna] = numpy.matmul(kirikalitengah, kanan[0:k, :])
+                sudah = True #disini sudah didapat banyaknya singular values yakni i
+        k = round((1-rasio/100)*i)
+        tengah = numpy.diag(tengah) #biar tengahnya jadi matriks, bukan array berisi singular values
+        matrikshasil[:,:,warna] = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] #mengalikan kembali matriksnya
     matrikshasil = matrikshasil.astype('uint8') #INI SOALNYA PIL GABISA BACA ELEMEN FLOAT, DICONVERT DULU JADI UNSIGNED
-    return matrikshasil, i , k
+    gambarmerah = Image.fromarray(matrikshasil[:,:,0], mode=None)
+    gambarhijau = Image.fromarray(matrikshasil[:,:,1], mode=None)  #INI UNTUK NJADIIN TIAP WARNA DULU JADI GAMBAR
+    gambarbiru = Image.fromarray(matrikshasil[:,:,2], mode=None)
+    hasilgambar = Image.merge('RGB', (gambarmerah, gambarhijau, gambarbiru)) #MENGGABUNGKAN TIAP WARNA JADI SATU GAMBAR
+    return hasilgambar, i , k
 
 
 # ALGORITMA
@@ -51,15 +56,11 @@ waktuawal = time.time()
 
 print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
 
-gambarasli = Image.open('sasugee.png') # untuk buka gambarnya pake PIL
+gambarasli = Image.open('./temp.png') # untuk buka gambarnya pake PIL
 
-matriksgambar = numpy.array(gambarasli) # convert gambarnya jadi matriks
+rasio = float(input("Masukkan rasio yang anda inginkan (dalam persen): ")) #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
 
-rasio = float(input("Masukkan rasio yang anda inginkan: ")) #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
-
-compressed, banyaksingularvalue, singularvaluedigunakan = kompresmatriks(matriksgambar, rasio) #UNTUK NGEKOMPRES MATRIKS
-
-gambarakhir = Image.fromarray(compressed, mode=None) #CONVERT MATRIKS BALIK JADI IMAGE
+gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambar(gambarasli, rasio) #UNTUK NGEKOMPRES gambar
 
 print("Banyaknya singular values adalah:", banyaksingularvalue)
 print("Banyaknya singular values digunakan adalah", singularvaluedigunakan)
