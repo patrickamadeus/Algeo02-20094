@@ -1,5 +1,5 @@
 import numpy 
-from PIL import Image
+from PIL import Image,ImageOps
 
 #matriks = numpy.arange(12).reshape((3,4))
 
@@ -9,6 +9,6 @@ from PIL import Image
 
 #print(len(tengah))
 
-gambarasli = Image.open('./temp.png') # untuk buka gambarnya pake PIL
-matriksgambar = numpy.array(gambarasli) # convert gambarnya jadi matriks
-print(matriksgambar[:,:,1])
+gambarasli = Image.open('./grey.png') # untuk buka gambarnya pake PIL
+matrixasli = numpy.array(gambarasli)
+print(matrixasli.ndim)

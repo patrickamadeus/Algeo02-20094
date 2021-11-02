@@ -25,10 +25,9 @@ def convertPNGtoJPG(filename) :
     else :
         print("awalnya bukan png")
 
-# TLDR : ini fungsinya ngambil semua gambar, dijadiin matriks, pake SVD, singular values dari matriks nya cuman dipake beberapa bergantung rasio
+# TLDR : ini ngambil matriks dari sebuah gambar, pake SVD, singular values dari matriks nya cuman dipake beberapa bergantung rasio
 # Trus matriksnya dikaliin lagi, diconvert balik jadi gambar. Trus ngereturn gambar hasil, banyaknya singular values, singular values digunakan
-def kompresgambar(gambarawal, rasio):
-    matriksawal = numpy.array(gambarawal)  # convert gambarnya jadi matriks
+def kompresgambar(matriksawal, rasio):
     matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], matriksawal.shape[2])) #Inisialisasi matriks kosong sebagai hasilnya
     for warna in range(3): 
         kiri, tengah, kanan = numpy.linalg.svd(matriksawal[:,:,warna]) # ini dekomposisi jadi kiri tengah kanan
@@ -50,17 +49,38 @@ def kompresgambar(gambarawal, rasio):
     hasilgambar = Image.merge('RGB', (gambarmerah, gambarhijau, gambarbiru)) #MENGGABUNGKAN TIAP WARNA JADI SATU GAMBAR
     return hasilgambar, i , k
 
+def kompresgambargrey(matriksawal, rasio):
+    matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1])) 
+    kiri, tengah, kanan = numpy.linalg.svd(matriksawal[:,:]) 
+    i = 0
+    sudah = False
+    while (i < len(tengah) and (not sudah)) : 
+        if abs(tengah[i]) >= 1e-8 :
+            i += 1
+        else :
+            sudah = True 
+    k = round((1-rasio/100)*i)
+    tengah = numpy.diag(tengah) 
+    matrikshasil[:,:] = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] 
+    matrikshasil = matrikshasil.astype('uint8') 
+    hasilgambar = Image.fromarray(matrikshasil[:,:], mode=None)
+    return hasilgambar, i , k
+
 
 # ALGORITMA
-waktuawal = time.time()
 
 print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
 
-gambarasli = Image.open('./temp.png') # untuk buka gambarnya pake PIL
+gambarawal = Image.open('./grey.png') # untuk buka gambarnya pake PIL
+matriksawal = numpy.array(gambarawal)  # convert gambarnya jadi matriks
 
 rasio = float(input("Masukkan rasio yang anda inginkan (dalam persen): ")) #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
+waktuawal = time.time()
 
-gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambar(gambarasli, rasio) #UNTUK NGEKOMPRES gambar
+if (matriksawal.ndim == 3) : # INI KALAU KASUS GAMBARNYA BERWARNA
+    gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambar(matriksawal, rasio) #UNTUK NGEKOMPRES gambar
+elif (matriksawal.ndim == 2) : # INI KALAU KASUS GAMBARNYA GREYSCALE
+    gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargrey(matriksawal, rasio)
 
 print("Banyaknya singular values adalah:", banyaksingularvalue)
 print("Banyaknya singular values digunakan adalah", singularvaluedigunakan)
@@ -71,4 +91,4 @@ waktuakhir = time.time()
 waktueksekusi = waktuakhir - waktuawal
 print("Waktu eksekusi program adalah", waktueksekusi)
 
-print('SEKIAN DARI S4R4pppp')
+print('SEKIAN DARI S4R4PP')
