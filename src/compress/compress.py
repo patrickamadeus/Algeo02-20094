@@ -39,14 +39,11 @@ def kompresmatriks(matriksawal, rasio):
                 i += 1
             else :
                 break #disini sudah didapat banyaknya singular values yakni i
-        k = round(rasio*i)
-        print(len(tengah))
-        print(i) #INI UNTUK NGETES DOANG SI, singular value dari svd dengan yang bener dan dengan yang digunakan
-        print(k)
+        k = round((1-rasio)*i)
         kirikalitengah = numpy.matmul(kiri[:, 0:k], numpy.diag(tengah)[0:k, 0:k])
         matrikshasil[:,:,warna] = numpy.matmul(kirikalitengah, kanan[0:k, :])
     matrikshasil = matrikshasil.astype('uint8') #INI SOALNYA PIL GABISA BACA ELEMEN FLOAT, DICONVERT DULU JADI UNSIGNED
-    return matrikshasil
+    return matrikshasil, i , k
 
 
 # ALGORITMA
@@ -54,20 +51,23 @@ waktuawal = time.time()
 
 print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
 
-gambarasli = Image.open('../../test/sasugee.png') # untuk buka gambarnya pake PIL
+gambarasli = Image.open('sasugee.png') # untuk buka gambarnya pake PIL
 
 matriksgambar = numpy.array(gambarasli) # convert gambarnya jadi matriks
 
 rasio = float(input("Masukkan rasio yang anda inginkan: ")) #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
 
-compressed = kompresmatriks(matriksgambar, rasio) #UNTUK NGEKOMPRES MATRIKS
+compressed, banyaksingularvalue, singularvaluedigunakan = kompresmatriks(matriksgambar, rasio) #UNTUK NGEKOMPRES MATRIKS
 
 gambarakhir = Image.fromarray(compressed, mode=None) #CONVERT MATRIKS BALIK JADI IMAGE
+
+print("Banyaknya singular values adalah:", banyaksingularvalue)
+print("Banyaknya singular values digunakan adalah", singularvaluedigunakan)
 
 gambarakhir.show()
 
 waktuakhir = time.time()
-print("Waktu eksekusi program adalah",waktuakhir-waktuawal)
+waktueksekusi = waktuakhir - waktuawal
+print("Waktu eksekusi program adalah", waktueksekusi)
 
 print('SEKIAN DARI S4R4pppp')
-
