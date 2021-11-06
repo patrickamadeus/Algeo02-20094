@@ -37,8 +37,6 @@ def getEigenVector(matriks, eigval):
 
     # 3. Bikin matriks dari hasil persamaan karakteristiknya
 
-    
-
 def getsvd(matriks):
     ## A. SINGULAR KIRI
     # 1. kali matriks dengan matriks transposenya -> A.A^T
@@ -47,7 +45,7 @@ def getsvd(matriks):
         # kalo pake numpy -> mnew = np.dot(m, mt)
         # kalo pake sympy -> mnew = m*mt
 
-    # 2. cari eigenvaluesnya A.A^T
+    # 2. cari eigenvaluesnya A.A^T -> nilai singular = akar dari eigenvaluenya
 
     # 3. cari eigenvectornya A.A^T
 
@@ -61,7 +59,7 @@ def getsvd(matriks):
         # kalo pake numpy -> mnew = np.dot(mt, m)
         # kalo pake sympy -> mnew = mt*m
 
-    # 6. cari eigenvaluesnya A^T.A
+    # 6. cari eigenvaluesnya A^T.A -> nilai singular = akar dari eigenvaluenya
 
     # 7. cari eigenvectornya A^T.A
 
