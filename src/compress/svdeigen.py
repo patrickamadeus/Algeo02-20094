@@ -1,6 +1,6 @@
-import numpy as np
-import sympy as sym
-import random
+import numpy as np # buat operasi matriks
+import sympy as sym # buat bikin matriks yang pake lamda
+import random #buat gauss function
 # atau from sympy import * ???
 
 #KALAU BISA HASILNYA DALAM BENTUK ARRAY
@@ -69,6 +69,6 @@ def getsvd(matriks):
     # 9. transpose matriks V
         # dapet matriks V^T
 
-    # 10. matriks E = gabungan eigenvalues
+    # 10. matriks E = gabungan eigenvalues dari A^T.A
 
     # 11. SVD = U x E x V^T
