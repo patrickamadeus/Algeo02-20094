@@ -1,4 +1,5 @@
-import numpy as np # buat operasi matriks
+import numpy as np
+from numpy.matrixlib.defmatrix import matrix # buat operasi matriks
 import sympy as sym # buat bikin matriks yang pake lamda
 import random #buat gauss function
 # atau from sympy import * ???
@@ -42,20 +43,32 @@ def getsvd(matriks):
     # 1. kali matriks dengan matriks transposenya -> A.A^T
     m = matriks
     mt = m.transpose()
+    mnew = np.dot(m, mt)
         # kalo pake numpy -> mnew = np.dot(m, mt)
         # kalo pake sympy -> mnew = m*mt
 
-    # 2. cari eigenvaluesnya A.A^T -> nilai singular = akar dari eigenvaluenya
+    # 2. cari eigenvaluesnya A.A^T 
+    # ini masih bingung eigenvaluesnya ngumpulinnya gimana dan outputnya apa
+    e = []
+    e = [0 for i in range (len(mnew))
+    e = getEigenValues(mnew)
+
 
     # 3. cari eigenvectornya A.A^T
+    for i in range (len(e)):
+        # bikin inisialisasi matriksnya dengan nama matriks arr(i)
+        arr[i] = getEigenVector(mnew, e[i])
 
     # 4. normalisasiin eigenvectornya A.A^T
+    for i in range (len(e)) :
+        # bikin inisialisasi matriksnya dengan nama matriks norms(i)
+        n = np.linalg.matrix(arr[i], axis = 1)
+        norms[i] = arr[i]/n
         # dapet matriks U (M X M) dari gabungan eigenvector
 
     ## B. SINGULAR KANAN
     # 5. kali matriks dengan matriks transposenya -> A^T.A
-    m = matriks
-    mt = m.transpose()
+    mnew2 = np.dot(mt, m)
         # kalo pake numpy -> mnew = np.dot(mt, m)
         # kalo pake sympy -> mnew = mt*m
 
@@ -71,4 +84,5 @@ def getsvd(matriks):
 
     # 10. matriks E = gabungan eigenvalues dari A^T.A
 
-    # 11. SVD = U x E x V^T
+    # 11. A = U x E x V^T
+    # return U, E, V^T
