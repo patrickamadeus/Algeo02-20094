@@ -3,6 +3,7 @@ from numpy.matrixlib.defmatrix import matrix # buat operasi matriks
 import sympy as sym # buat bikin matriks yang pake lamda
 import random #buat gauss function
 # atau from sympy import * ???
+# INI BLM DICOBA RUN SAMSEK KARENA SYMNYA ERROR
 
 #KALAU BISA HASILNYA DALAM BENTUK ARRAY
 def getEigenValues(matriks):
