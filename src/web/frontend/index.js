@@ -80,6 +80,8 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
     const percentageShow = document.getElementById("perc");
 
     console.log(inputCompression.value);
+
+
     // conditional situation untuk tipe file yang di-upload
     if (inputFiles.files[0] !== undefined && inputFiles.files[0].type.startsWith("image/")){
       sessionStorage.clear();
@@ -101,7 +103,7 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
       })
     }
     else{
-      percentageShow.innerHTML = "-";
+      percentageShow.innerHTML = "Error!";
       console.log("NO");
     }
   };

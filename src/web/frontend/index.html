@@ -9,10 +9,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
 
     <!-- My CSS -->
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="./assets/index.css" />
 
     <!-- Fonts -->
-    <link rel="shortcut icon" href="weblogo.png" />
+    <link rel="shortcut icon" href="./assets/weblogo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Proza+Libre:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -36,15 +36,20 @@
       </div>
       <div class = "form-side">
         <form id="reportImage" enctype="multipart/form-data" method="POST">
+          <!--PERTAMA-->
           <div class="drop-zone">
             <div class="drop-zone__prompt">Drop image here / click to upload</div>
             <input type="file" name="imagereport" class="drop-zone__input" id="reportFile">
           </div>
+
+          <!--KEDUA-->
           <div id = "compressionSlider">
             <!-- <label for="compressionrate">Compression Rate :</label> -->
             <input type="range" min="0" max="100" value="0" class="compressionrate" id="reportCompression">
             <p>Compression Rate : <span id="rateShow"></span> %</p>
           </div>
+
+
             <button type="submit" form="reportImage" data-bs-toggle="modal" data-bs-target="#submitted" id = "upload-button">Upload</button>
         </form>
       </div>
@@ -88,10 +93,10 @@
 
       <div class="row">
         <div class="column">
-          <img src="weblogo.png" alt="Before" style="width:50%" id = "before-image">
+          <img src="./assets/no-image.jpg" alt="Before" style="width:75%" id = "before-image">
         </div>
         <div class="column">
-          <img src="weblogo.png" alt="After" style="width:50%" id = "after-image">
+          <img src="./assets/no-image.jpg" alt="After" style="width:75%" id = "after-image">
         </div>
       </div>
 
