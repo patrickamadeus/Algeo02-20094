@@ -20,7 +20,7 @@ def getEigenValues(matriks):
                 #matId[i][j] = lamda
     
     # ini kalo matriks identitas doang blm di lamdain
-    matId = np.zeros((row,col))
+    #matId = np.zeros((row,col))
     for i in range (row) :
         for j in range (col) :
             if (j == i):
@@ -50,17 +50,17 @@ def getsvd(matriks):
 
     # 2. cari eigenvaluesnya A.A^T 
     # ini masih bingung eigenvaluesnya ngumpulinnya gimana dan outputnya apa
-    e = []
-    e = [0 for i in range (len(mnew))
+    e = [0 for i in range (len(mnew))]
     e = getEigenValues(mnew)
 
-
     # 3. cari eigenvectornya A.A^T
+    arr = [0 for i in range (len(e))]
     for i in range (len(e)):
         # bikin inisialisasi matriksnya dengan nama matriks arr(i)
         arr[i] = getEigenVector(mnew, e[i])
 
     # 4. normalisasiin eigenvectornya A.A^T
+    norms = [0 for i in range (len(e))]
     for i in range (len(e)) :
         # bikin inisialisasi matriksnya dengan nama matriks norms(i)
         n = np.linalg.matrix(arr[i], axis = 1)
@@ -81,7 +81,7 @@ def getsvd(matriks):
         # dapet matriks V (N X N) dari gabungan eigenvectornya
     
     # 9. transpose matriks V
-        # dapet matriks V^T
+        # dapet matriks V^T --> fungsinya (nama matriks).np.transpose
 
     # 10. matriks E = gabungan eigenvalues dari A^T.A
 
