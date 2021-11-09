@@ -57,7 +57,7 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
   
     thumbnailElement.dataset.label = file.name;
   
-    // Show thumbnail for image files
+    // Show thumbnail buat image files
     if (file.type.startsWith("image/")) {
       const reader = new FileReader();
   
@@ -78,6 +78,7 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
     const inputFiles = document.getElementById("reportFile");
     const inputCompression = document.getElementById("reportCompression");
     const percentageShow = document.getElementById("perc");
+    const downloadButton = document.getElementById("download-button");
 
     console.log(inputCompression.value);
 
@@ -85,6 +86,11 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
     // conditional situation untuk tipe file yang di-upload
     if (inputFiles.files[0] !== undefined && inputFiles.files[0].type.startsWith("image/")){
       sessionStorage.clear();
+
+      //buat download button jadi kelihatan
+      if (downloadButton.style.display !== "block"){
+        downloadButton.style.display = "block";
+      }
 
       percentageShow.innerHTML = inputCompression.value + "% Compression";
   
@@ -103,12 +109,17 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
       })
     }
     else{
+      if (downloadButton.style.display !== "none"){
+        downloadButton.style.display = "none";
+      }
+
       percentageShow.innerHTML = "Error!";
       console.log("NO");
     }
   };
 
 
+  //toggle show result section
   const targetDiv = document.getElementById("compression-result");
   const submit = document.getElementById("show-button");
 
@@ -120,6 +131,22 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
       targetDiv.style.display = "none";
     }
   };
+
+
+  //download compressed image section
+  const btnDownload = document.querySelector("#download");
+  const imgDownload = document.querySelector("#after-image");
+
+  function getFileName(file){
+    return file.substring(file.lastIndexOf('/') + 1);
+  }
+  
+  
+  btnDownload.addEventListener('click', () => {
+    const path = imgDownload.getAttribute('src');
+    saveAs(path,"compressed-image");
+  })
+
 
   
   

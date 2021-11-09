@@ -279,6 +279,7 @@ body {
   padding: 10px;
 }
 
+/* section for before image and after image */
 #compression-result {
   display: none;
   margin-bottom: 50px;
@@ -299,4 +300,15 @@ body {
   content: "";
   clear: both;
   display: table;
+}
+
+/* Main download button */
+#download-button{
+  display: none;
+  margin-bottom: 50px;
+}
+
+#download-button button{
+  color: black;
+  background-color: green;
 }
