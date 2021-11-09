@@ -47,12 +47,12 @@ def kompresgambartransparan(matriksawal, rasio):
         tengah = numpy.diag(tengah) #biar tengahnya jadi matriks, bukan array berisi singular values
         matrikshasil[:,:,warna] = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] #mengalikan kembali matriksnya
     matrikshasil[:,:,3] = matriksawal[:,:,3]
-    '''for baris in range(matrikshasil.shape[0]) :
+    for baris in range(matrikshasil.shape[0]) :
         for kolom in range (matrikshasil.shape[1]):
             if matrikshasil[baris,kolom,3] == 0 :
                 matrikshasil[baris,kolom,0] = 0
                 matrikshasil[baris,kolom,1] = 0
-                matrikshasil[baris,kolom,2] = 0'''
+                matrikshasil[baris,kolom,2] = 0
     matrikshasil = matrikshasil.astype('uint8') #INI SOALNYA PIL GABISA BACA ELEMEN FLOAT, DICONVERT DULU JADI UNSIGNED
     hasilgambar = Image.fromarray(matrikshasil, mode=None)
     return hasilgambar, i , k
@@ -78,10 +78,10 @@ def kompresgambargreytransparan(matriksawal, rasio):
     tengah = numpy.diag(tengah) 
     matrikshasil[:,:,0] = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] 
     matrikshasil[:,:,1] = matriksawal[:,:,1]
-    '''for baris in range(matrikshasil.shape[0]) :
+    for baris in range(matrikshasil.shape[0]) :
         for kolom in range (matrikshasil.shape[1]):
             if matrikshasil[baris,kolom,1] == 0 :
-                matrikshasil[baris,kolom,0] = 0'''
+                matrikshasil[baris,kolom,0] = 0
     matrikshasil = matrikshasil.astype('uint8') 
     hasilgambar = Image.fromarray(matrikshasil[:,:], mode=None)
     return hasilgambar, i , k
@@ -101,11 +101,16 @@ def kompresgambargrey(matriksawal, rasio):
 
 print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
 
-modeP = False
 gambarawal = Image.open('./transparan.png')# untuk buka gambarnya pake PIL
-if gambarawal.mode == 'P':
-    modeP = True
+modeawal = gambarawal.mode
+modePA = False
+modeP = False
+if gambarawal.mode == 'P' :
     gambarawal = gambarawal.convert('RGBA')
+    modeP = True
+if gambarawal.mode == 'PA':
+    gambarawal = gambarawal.convert('RGBA')
+    modePA = True
 matriksawal = numpy.array(gambarawal)  # convert gambarnya jadi matriks
 
 rasio = float(input("Masukkan rasio yang anda inginkan (dalam persen): ")) #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
@@ -118,20 +123,20 @@ if (matriksawal.ndim == 3) :
         gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargreytransparan(matriksawal, rasio) 
     elif (matriksawal.shape[2] == 4) : # KASUS RGBA 
         gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambartransparan(matriksawal, rasio) 
-elif (matriksawal.ndim == 2) : # KASUS GREYSCALE (L) ATAU TRANSPARAN (P)
-    if modeP == False:
-        gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargrey(matriksawal,rasio)
-    else :
-        gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambartransparan(matriksawal, rasio) 
+    if (modeP) :
         gambarakhir = gambarakhir.convert('P')
+    if (modePA) :
+        gambarakhir = gambarakhir.convert('PA')
+elif (matriksawal.ndim == 2) : # KASUS GREYSCALE (L) 
+        gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargrey(matriksawal,rasio)
 
 
 print("Banyaknya singular values adalah:", banyaksingularvalue)
 print("Banyaknya singular values digunakan adalah", singularvaluedigunakan)
 
 gambarakhir.show()
-print(gambarawal.mode)
-print(gambarakhir.mode)
+#print(modeawal)
+#print(gambarakhir.mode)
 
 waktuakhir = time.time()
 waktueksekusi = waktuakhir - waktuawal
