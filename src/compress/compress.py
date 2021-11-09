@@ -2,6 +2,10 @@ from PIL import Image
 import numpy
 import os
 import time
+# Kalau misal nanti dipakai komentarnya dihapus aja buat baca URL jadi gambar dan sebaliknya
+'''import requests 
+from io import BytesIO, StringIO
+from django.core.files.uploadedfile import InMemoryUploadedFile'''
 
 # BTW INI AKU ASUMSI RASIO (TINGKAT KOMPRESI) ITU PERBANDINGAN SINGULAR_VALUES_DIGUNAKAN / SINGULAR_VALUES_TOTAL YA GAIS
 # SOALNYA DI SPEK TUBES TULISANNYA "formatnya dibebaskan, cth: Jumlah singular value yang digunakan"
@@ -25,6 +29,7 @@ def convertPNGtoJPG(filename) :
     else :
         print("awalnya bukan png")
         
+# Terdapat singular values yang sangat kecil sehingga perlu diabaikan
 def cariefektif(tengah):
     i = 0
     sudah = False
@@ -70,6 +75,7 @@ def kompresgambar(matriksawal, rasio):
     hasilgambar = Image.fromarray(matrikshasil, mode=None)
     return hasilgambar, i , k
 
+# Sama seperti kompres gambar transparan, namun versi LA
 def kompresgambargreytransparan(matriksawal, rasio):
     matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 2)) 
     kiri, tengah, kanan = numpy.linalg.svd(matriksawal[:,:,0]) 
@@ -86,6 +92,7 @@ def kompresgambargreytransparan(matriksawal, rasio):
     hasilgambar = Image.fromarray(matrikshasil[:,:], mode=None)
     return hasilgambar, i , k
 
+# Sama seperti kompres gambar, namun versi L
 def kompresgambargrey(matriksawal, rasio):
     matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1])) 
     kiri, tengah, kanan = numpy.linalg.svd(matriksawal[:,:]) 
@@ -101,9 +108,12 @@ def kompresgambargrey(matriksawal, rasio):
 
 print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
 
-gambarawal = Image.open('./transparan.png')# untuk buka gambarnya pake PIL
+# KALAU BUKANYA DARI URL :
+'''response = requests.get(url)
+#gambarawal = Image.open(BytesIO(response.content)) INI CONVERT URL JADI GAMBAR '''
+gambarawal = Image.open('./transparan.png')# ini yang secara manual, bisa dihapus nanti
 modeawal = gambarawal.mode
-modePA = False
+modePA = False # UNTUK MENGECEK MODE AWALNYA APAKAH TRANSPARAN P ATAU PA KARENA MEMPROSESNYA BEDA
 modeP = False
 if gambarawal.mode == 'P' :
     gambarawal = gambarawal.convert('RGBA')
@@ -135,8 +145,15 @@ print("Banyaknya singular values adalah:", banyaksingularvalue)
 print("Banyaknya singular values digunakan adalah", singularvaluedigunakan)
 
 gambarakhir.show()
+# MENYIMPAN HASILNYA KE file django?
+'''hasilIO = StringIO.StringIO()
+gambarakhir.save(hasilIO, "PNG")
+filehasil = inMemoryUploadedFile(hasilIO, None, 'compressed.png' , hasilIO.len, None)'''
+
 #print(modeawal)
 #print(gambarakhir.mode)
+#print(gambarawal.size)
+#print(gambarakhir.size)
 
 waktuakhir = time.time()
 waktueksekusi = waktuakhir - waktuawal
