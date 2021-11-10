@@ -28,9 +28,6 @@ def svd(matriksawal, k):
 
     # Mencari nilai matriks untuk sebanyak k awal yang dibutuhkan
     for i in range(k):
-        # Menginisialisasi nilai singular
-        nilaisingular = 1
-
         # Men-transpose matriks awal
         matriksawaltranspos = numpy.transpose(matriksawal)
 
@@ -38,7 +35,7 @@ def svd(matriksawal, k):
         matriksgabungan = numpy.dot(matriksawaltranspos, matriksawal)
 
         # Mencari nilai x
-        x = random.normal(0, nilaisingular, size=kolom)
+        x = random.normal(0, 1, size=kolom)
         for j in range(10): # pengulangan sebanyak 10 kali untuk memastikan vektor x yang didapat seakurat mungkin
             x = numpy.dot(matriksgabungan, x)
         
@@ -46,7 +43,7 @@ def svd(matriksawal, k):
         normx = numpy.linalg.norm(x)
         v = numpy.divide(x,normx,where=normx!=0)
         
-        # Mengisi matriks tengah
+        # mencari nilai singularnya dan menambahkan ke matriks tengah
         nilaisingular = linalg.norm(numpy.dot(matriksawal, v))
         matriksawalv = numpy.dot(matriksawal, v)
         tengah.append(nilaisingular)
