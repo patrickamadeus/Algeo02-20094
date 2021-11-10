@@ -39,7 +39,7 @@ def svd(matriksawal, k):
 
         # Mencari nilai x
         x = random.normal(0, nilaisingular, size=kolom)
-        for i in range(10): # pengulangan sebanyak 10 kali untuk memastikan vektor x yang didapat seakurat mungkin
+        for j in range(10): # pengulangan sebanyak 10 kali untuk memastikan vektor x yang didapat seakurat mungkin
             x = numpy.dot(matriksgabungan, x)
         
         # Mencari nilai distribusi gauss
