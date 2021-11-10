@@ -4,6 +4,7 @@ import os
 import time
 import base64
 from io import BytesIO,StringIO
+from numpy import random, linalg
 # Kalau misal nanti dipakai komentarnya dihapus aja buat baca URL jadi gambar dan sebaliknya
 '''import requests 
 from io import BytesIO, StringIO
@@ -17,56 +18,56 @@ from django.core.files.uploadedfile import InMemoryUploadedFile'''
 
 # ALGORITMA
 
-# SVD function
+# Fungsi SVD
 def svd(A, rank, iterations=10):
-    # Assign values
+    # Membuat definisi panggilan
     row = len(A)
     col = len(A[0])
 
-    # Initialize matrix
+    # Menginisialisasi matriks
     U = numpy.zeros((row, 1))
     S = []
     V = numpy.zeros((col, 1))
 
-    # Do the SVD using the power method
+    # Melakukan SVD menggunakan power methode
     for i in range(rank):
-        # Assign initial value
+        # Menginisialisasi nilai sigma
         sigma = 1
 
-        # Transpose the A matrix
+        # Men-transpose matriks A
         AT = numpy.transpose(A)
 
-        # Find the dot product of A transpose & A itself
+        # Mencari hasil perkalian dot dari A transpose dengan A
         B = numpy.dot(AT, A)
 
-        # Assigning the x value
+        # Mencari nilai x
         x = random.normal(0, sigma, size=col)
         for i in range(iterations):
             x = numpy.dot(B, x)
         
-        # Find the random distribution
+        # Mencari nilai distribusi gauss
         normx = numpy.linalg.norm(x)
         v = numpy.divide(x,normx,where=normx!=0)
         
-        # Assign the sigma value
+        # Mengisi matriks sigma
         sigma = linalg.norm(numpy.dot(A, v))
         Av = numpy.dot(A, v)
         S.append(sigma)
 
-        # Assign the U matrix
+        # Mengisi matriks U
         u = numpy.reshape(numpy.divide(Av,sigma,where=sigma!=0), (row, 1))
         U = numpy.concatenate((U,u), axis = 1)
 
-        # Assign the V matrix
+        # Mengisi matriks V
         v = numpy.reshape(v, (col, 1))
         V = numpy.concatenate((V,v), axis = 1)
 
-        # Assigning the new A matrix
+        # Mengganti matriks A
         A = A - numpy.dot(numpy.dot(u, numpy.transpose(v)), sigma)
     
+    # Mengembalikan U, S, dan V transpose
     return U[:, 1:], S, numpy.transpose(V[:, 1:])
 
-# K finder
 def banyaknyaKdigunakan(matriksawal,rasio):
     baris, kolom = matriksawal.shape[0], matriksawal.shape[1], 
     if baris < kolom :
