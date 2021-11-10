@@ -14,7 +14,8 @@ from django.core.files.uploadedfile import InMemoryUploadedFile'''
 
 # KAMUS
 def eigenvalue(A, v):
-    val = A @ v / v
+    val = A @ v 
+    val = numpy.divide(val,v,where=v!=0)
     return val[0]
 
 def svd_dominant_eigen(A, epsilon=0.01):
