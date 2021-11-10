@@ -2,8 +2,9 @@ from PIL import Image
 import numpy
 import os
 import time
-import base64
-from io import BytesIO,StringIO
+from numpy.linalg import norm
+from random import normalvariate
+from math import sqrt
 # Kalau misal nanti dipakai komentarnya dihapus aja buat baca URL jadi gambar dan sebaliknya
 '''import requests 
 from io import BytesIO, StringIO
@@ -13,65 +14,34 @@ from django.core.files.uploadedfile import InMemoryUploadedFile'''
 # SOALNYA DI SPEK TUBES TULISANNYA "formatnya dibebaskan, cth: Jumlah singular value yang digunakan"
 
 # KAMUS
-def eigenvalue(A, v):
-    val = A @ v 
-    val = numpy.divide(val,v,where=v!=0)
-    return val[0]
+def power_svd(A, iters):
+    mu, sigma = 0, 1
+    x = numpy.random.normal(mu, sigma, size=A.shape[1])
+    B = A.T.dot(A)
+    for i in range(iters):
+        new_x = B.dot(x)
+        x = new_x
+    normx = numpy.linalg.norm(x)
+    v = numpy.divide(x,normx,where=normx!=0)
+    sigma = numpy.linalg.norm(A.dot(v))
+    Av = A.dot(v) 
+    u = numpy.divide(Av,sigma,where=sigma!=0)
+    return numpy.reshape(u, (A.shape[0], 1)), sigma, numpy.reshape(v, (A.shape[1], 1))
 
-def svd_dominant_eigen(A, epsilon=0.01):
-    """returns dominant eigenvalue and dominant eigenvector of matrix A"""
-    n, m = A.shape
-    k=min(n,m)
-    v = numpy.ones(k) / numpy.sqrt(k)
-    if n > m:
-        A = A.T @ A
-    elif n < m:
-        A = A @ A.T
-    
-    ev = eigenvalue(A, v)
+def svd(A, rank, iterations=10):
+    U = numpy.zeros((A.shape[0], 1))
+    S = []
+    V = numpy.zeros((A.shape[1], 1))
 
-    while True:
-        Av = A@ v
-        v_new = Av / numpy.linalg.norm(Av)
-        ev_new = eigenvalue(A, v_new)
-        if numpy.abs(ev - ev_new) < epsilon:
-            break
+    # SVD using Power Method
+    for i in range(rank):
+        u, sigma, v = power_svd(A, iterations)
+        U = numpy.hstack((U, u))
+        S.append(sigma)
+        V = numpy.hstack((V, v))
+        A = A - u.dot(v.T).dot(sigma)
 
-        v = v_new
-        ev = ev_new
-
-    return ev_new, v_new
-
-def svd(A, k=None, epsilon=1e-10):
-    """returns k dominant eigenvalues and eigenvectors of matrix A"""
-    A = numpy.array(A, dtype=float)
-    n, m = A.shape
-        
-    svd_so_far = []
-    if k is None:
-        k = min(n, m)
-
-    for i in range(k):
-        matrix_for_1d = A.copy()
-
-        for singular_value, u, v in svd_so_far[:i]:
-            matrix_for_1d -= singular_value * numpy.outer(u, v)
-
-        if n > m:
-            _, v = svd_dominant_eigen(matrix_for_1d, epsilon=epsilon)  # next singular vector
-            u_unnormalized = A @ v
-            sigma = numpy.linalg.norm(u_unnormalized)  # next singular value
-            u = u_unnormalized / sigma
-        else:
-            _, u = svd_dominant_eigen(matrix_for_1d, epsilon=epsilon)  # next singular vector
-            v_unnormalized = A.T @ u
-            sigma = numpy.linalg.norm(v_unnormalized)  # next singular value
-            v = v_unnormalized / sigma
-
-        svd_so_far.append((sigma, u, v))
-
-    singular_values, us, vs = [numpy.array(x) for x in zip(*svd_so_far)]
-    return us.T, singular_values, vs
+    return U[:, 1:], S, V[:, 1:].T
 
 def banyaknyaKdigunakan(matriksawal,rasio):
     baris, kolom = matriksawal.shape[0], matriksawal.shape[1], 
@@ -123,6 +93,8 @@ def buangpixelsisa(matrikshasil, berwarna) :
 # INI UNTUK KOMPRESI VERSI GAMBAR RGB UNTUK TIDAK TRANSPARAN, RGBA UNTUK TRANSPARAN
 def kompresgambarwarna(matriksawal, rasio,transparan):
     k= banyaknyaKdigunakan(matriksawal,rasio)
+    print("banyaknya singularvalues total adalah", k/(1-rasio/100))
+    print("banyaknya singular values digunakan adalah", k)
     if (transparan):
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 4)) #Inisialisasi matriks kosong sebagai hasilnya
     else :
@@ -140,9 +112,11 @@ def kompresgambarwarna(matriksawal, rasio,transparan):
 # Sama seperti kompres gambar, tetapi versi L dan LA
 def kompresgambargrey(matriksawal, rasio, transparan):
     k= banyaknyaKdigunakan(matriksawal,rasio)
+    print("banyaknya singularvalues total adalah", k/(1-rasio/100))
+    print("banyaknya singular values digunakan adalah", k)
     if (transparan):
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 2))  #Inisialisasi matriks kosong sebagai hasilnya
-        kiri, tengah, kanan = svd(matriksawal[:,:,0], k) 
+        kiri, tengah, kanan = svd(matriksawal[:,:,0],k) 
     else :
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1])) 
         kiri, tengah, kanan = svd(matriksawal,k) # ini dekomposisi jadi kiri tengah kanan
@@ -163,7 +137,7 @@ def kompresgambargrey(matriksawal, rasio, transparan):
 # KALAU BUKANYA DARI URL :
 '''response = requests.get(url)
 #gambarawal = Image.open(BytesIO(response.content)) INI CONVERT URL JADI GAMBAR '''
-gambarawal = Image.open('./binjai.jpeg')# ini yang secara manual, bisa dihapus nanti
+gambarawal = Image.open('./temp.png')# ini yang secara manual, bisa dihapus nanti
 print(gambarawal.mode)
 modePA = False # UNTUK MENGECEK MODE AWALNYA APAKAH TRANSPARAN P ATAU PA KARENA MEMPROSESNYA BEDA
 modeP = False
@@ -197,5 +171,3 @@ gambarakhir.show()
 waktuakhir = time.time()
 waktueksekusi = waktuakhir - waktuawal
 print(waktueksekusi)
-
-

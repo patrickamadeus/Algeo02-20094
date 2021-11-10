@@ -27,11 +27,7 @@ def power_svd(A, iters):
     u = numpy.divide(Av,sigma,where=sigma!=0)
     return numpy.reshape(u, (A.shape[0], 1)), sigma, numpy.reshape(v, (A.shape[1], 1))
 
-def svd(A, iterations=10):
-    if (A.shape[0] > A.shape[1]) :
-        rank = A.shape[1]
-    else :
-        rank = A.shape[0]
+def svd(A, rank, iterations=10):
     U = numpy.zeros((A.shape[0], 1))
     S = []
     V = numpy.zeros((A.shape[1], 1))
@@ -101,7 +97,7 @@ def kompresgambarwarna(matriksawal, rasio,transparan):
     else :
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 3))
     for warna in range(3): 
-        kiri, tengah, kanan = svd(matriksawal[:,:,warna]) # ini dekomposisi jadi kiri tengah kanan
+        kiri, tengah, kanan = svd(matriksawal[:,:,warna],k) # ini dekomposisi jadi kiri tengah kanan
         tengah = numpy.diag(tengah) #biar tengahnya jadi matriks, bukan array berisi singular values
         matrikshasil[:,:,warna] = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] #mengalikan kembali matriksnya
     if (transparan):
@@ -115,10 +111,10 @@ def kompresgambargrey(matriksawal, rasio, transparan):
     k= banyaknyaKdigunakan(matriksawal,rasio)
     if (transparan):
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 2))  #Inisialisasi matriks kosong sebagai hasilnya
-        kiri, tengah, kanan = svd(matriksawal[:,:,0]) 
+        kiri, tengah, kanan = svd(matriksawal[:,:,0],k) 
     else :
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1])) 
-        kiri, tengah, kanan = svd(matriksawal) # ini dekomposisi jadi kiri tengah kanan
+        kiri, tengah, kanan = svd(matriksawal,k) # ini dekomposisi jadi kiri tengah kanan
     tengah = numpy.diag(tengah) #biar tengahnya jadi matriks, bukan array berisi singular values
     if (transparan) :
         matrikshasil[:,:,0] = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] #mengalikan kembali matriksnya kalau transparan
