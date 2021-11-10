@@ -49,11 +49,11 @@ def svd(A, rank, iterations=10):
 
         # Assign the U matrix
         u = numpy.reshape(numpy.divide(Av,sigma,where=sigma!=0), (row, 1))
-        U = numpy.hstack((U, u))
+        U = numpy.concatenate((U,u), axis = 1)
 
         # Assign the V matrix
         v = numpy.reshape(v, (col, 1))
-        V = numpy.hstack((V, v))
+        V = numpy.concatenate((V,v), axis = 1)
 
         # Assigning the new A matrix
         A = A - numpy.dot(numpy.dot(u, numpy.transpose(v)), sigma)
