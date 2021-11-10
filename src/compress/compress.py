@@ -31,10 +31,10 @@ def svd(matriksawal, k):
         # Menginisialisasi nilai singular
         nilaisingular = 1
 
-        # Men-transpose matriks A
+        # Men-transpose matriks awal
         matriksawaltranspos = numpy.transpose(matriksawal)
 
-        # Mencari hasil perkalian dot dari A transpose dengan A
+        # Mencari hasil perkalian dot dari transpos matriks awal dengan matriks awal itu sendiri
         matriksgabungan = numpy.dot(matriksawaltranspos, matriksawal)
 
         # Mencari nilai x
