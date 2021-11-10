@@ -15,58 +15,55 @@ from django.core.files.uploadedfile import InMemoryUploadedFile'''
 
 # KAMUS
 
-
-# ALGORITMA
-
-# Fungsi SVD
-def svd(A, rank):
+# Fungsi SVD menggunakan aproksimasi nilai singular dengan metode power method.
+def svd(matriksawal, k):
     # Membuat definisi panggilan
-    row = len(A)
-    col = len(A[0])
+    baris = len(matriksawal)
+    kolom = len(matriksawal[0])
 
-    # Menginisialisasi matriks
-    U = numpy.zeros((row, 1))
-    S = []
-    V = numpy.zeros((col, 1))
+    # Menginisialisasi matriks hasil dekomposisi svd
+    kiri = numpy.zeros((baris, 1))
+    tengah = []
+    kanan = numpy.zeros((kolom, 1))
 
-    # Melakukan SVD menggunakan power methode
-    for i in range(rank):
-        # Menginisialisasi nilai sigma
-        sigma = 1
+    # Mencari nilai matriks untuk sebanyak k awal yang dibutuhkan
+    for i in range(k):
+        # Menginisialisasi nilai singular
+        nilaisingular = 1
 
         # Men-transpose matriks A
-        AT = numpy.transpose(A)
+        matriksawaltranspos = numpy.transpose(matriksawal)
 
         # Mencari hasil perkalian dot dari A transpose dengan A
-        B = numpy.dot(AT, A)
+        matriksgabungan = numpy.dot(matriksawaltranspos, matriksawal)
 
         # Mencari nilai x
-        x = random.normal(0, sigma, size=col)
-        for i in range(10): #10 = jumlah iterasi
-            x = numpy.dot(B, x)
+        x = random.normal(0, nilaisingular, size=kolom)
+        for i in range(10): # pengulangan sebanyak 10 kali untuk memastikan vektor x yang didapat seakurat mungkin
+            x = numpy.dot(matriksgabungan, x)
         
         # Mencari nilai distribusi gauss
         normx = numpy.linalg.norm(x)
         v = numpy.divide(x,normx,where=normx!=0)
         
-        # Mengisi matriks sigma
-        sigma = linalg.norm(numpy.dot(A, v))
-        Av = numpy.dot(A, v)
-        S.append(sigma)
+        # Mengisi matriks tengah
+        nilaisingular = linalg.norm(numpy.dot(matriksawal, v))
+        matriksawalv = numpy.dot(matriksawal, v)
+        tengah.append(nilaisingular)
 
-        # Mengisi matriks U
-        u = numpy.reshape(numpy.divide(Av,sigma,where=sigma!=0), (row, 1))
-        U = numpy.concatenate((U,u), axis = 1)
+        # Mengisi matriks kiri
+        u = numpy.reshape(numpy.divide(matriksawalv,nilaisingular,where=nilaisingular!=0), (baris, 1))
+        kiri = numpy.concatenate((kiri,u), axis = 1)
 
-        # Mengisi matriks V
-        v = numpy.reshape(v, (col, 1))
-        V = numpy.concatenate((V,v), axis = 1)
+        # Mengisi matriks kanan
+        v = numpy.reshape(v, (kolom, 1))
+        kanan = numpy.concatenate((kanan,v), axis = 1)
 
-        # Mengganti matriks A
-        A = A - numpy.dot(numpy.dot(u, numpy.transpose(v)), sigma)
+        # Mengurangi matriks awal sebelumnya untuk diproses next valuenya
+        matriksawal = matriksawal - numpy.dot(numpy.dot(u, numpy.transpose(v)), nilaisingular)
     
-    # Mengembalikan U, S, dan V transpose
-    return U[:, 1:], S, numpy.transpose(V[:, 1:])
+    # Mengembalikan kiri,tengah, dan kanan transpose
+    return kiri[:, 1:], tengah, numpy.transpose(kanan[:, 1:])
 
 def banyaknyaKdigunakan(matriksawal,rasio):
     baris, kolom = matriksawal.shape[0], matriksawal.shape[1], 
