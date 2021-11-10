@@ -13,8 +13,65 @@ from django.core.files.uploadedfile import InMemoryUploadedFile'''
 # SOALNYA DI SPEK TUBES TULISANNYA "formatnya dibebaskan, cth: Jumlah singular value yang digunakan"
 
 # KAMUS
+def eigenvalue(A, v):
+    val = A @ v / v
+    return val[0]
+
+def svd_dominant_eigen(A, epsilon=0.01):
+    """returns dominant eigenvalue and dominant eigenvector of matrix A"""
+    n, m = A.shape
+    k=min(n,m)
+    v = numpy.ones(k) / numpy.sqrt(k)
+    if n > m:
+        A = A.T @ A
+    elif n < m:
+        A = A @ A.T
+    
+    ev = eigenvalue(A, v)
+
+    while True:
+        Av = A@ v
+        v_new = Av / numpy.linalg.norm(Av)
+        ev_new = eigenvalue(A, v_new)
+        if numpy.abs(ev - ev_new) < epsilon:
+            break
+
+        v = v_new
+        ev = ev_new
+
+    return ev_new, v_new
+
+def svd(A, k=None, epsilon=1e-10):
+    """returns k dominant eigenvalues and eigenvectors of matrix A"""
+    A = numpy.array(A, dtype=float)
+    n, m = A.shape
         
-# Terdapat singular values yang sangat kecil sehingga perlu diabaikan
+    svd_so_far = []
+    if k is None:
+        k = min(n, m)
+
+    for i in range(k):
+        matrix_for_1d = A.copy()
+
+        for singular_value, u, v in svd_so_far[:i]:
+            matrix_for_1d -= singular_value * numpy.outer(u, v)
+
+        if n > m:
+            _, v = svd_dominant_eigen(matrix_for_1d, epsilon=epsilon)  # next singular vector
+            u_unnormalized = A @ v
+            sigma = numpy.linalg.norm(u_unnormalized)  # next singular value
+            u = u_unnormalized / sigma
+        else:
+            _, u = svd_dominant_eigen(matrix_for_1d, epsilon=epsilon)  # next singular vector
+            v_unnormalized = A.T @ u
+            sigma = numpy.linalg.norm(v_unnormalized)  # next singular value
+            v = v_unnormalized / sigma
+
+        svd_so_far.append((sigma, u, v))
+
+    singular_values, us, vs = [numpy.array(x) for x in zip(*svd_so_far)]
+    return us.T, singular_values, vs
+
 def banyaknyaKdigunakan(matriksawal,rasio):
     baris, kolom = matriksawal.shape[0], matriksawal.shape[1], 
     if baris < kolom :
@@ -22,7 +79,7 @@ def banyaknyaKdigunakan(matriksawal,rasio):
     else :
         total = kolom
     digunakan = round((1-rasio/100)*total)
-    return total, digunakan
+    return digunakan
 
 # Fungsi ini menconvert gambar ke matriks dengan mengecek modeawal terlebih dahulu.
 def gambartomatriks(gambarawal):
@@ -64,30 +121,30 @@ def buangpixelsisa(matrikshasil, berwarna) :
 
 # INI UNTUK KOMPRESI VERSI GAMBAR RGB UNTUK TIDAK TRANSPARAN, RGBA UNTUK TRANSPARAN
 def kompresgambarwarna(matriksawal, rasio,transparan):
-    i , k= banyaknyaKdigunakan(matriksawal,rasio)
+    k= banyaknyaKdigunakan(matriksawal,rasio)
     if (transparan):
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 4)) #Inisialisasi matriks kosong sebagai hasilnya
     else :
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 3))
     for warna in range(3): 
-        kiri, tengah, kanan = numpy.linalg.svd(matriksawal[:,:,warna]) # ini dekomposisi jadi kiri tengah kanan
+        kiri, tengah, kanan = svd(matriksawal[:,:,warna],k) # ini dekomposisi jadi kiri tengah kanan
         tengah = numpy.diag(tengah) #biar tengahnya jadi matriks, bukan array berisi singular values
         matrikshasil[:,:,warna] = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] #mengalikan kembali matriksnya
     if (transparan):
         matrikshasil[:,:,3] = matriksawal[:,:,3]
         matrikshasil = buangpixelsisa(matrikshasil,True)
     hasilgambar = matrikstogambar(matrikshasil)
-    return hasilgambar, i , k
+    return hasilgambar
 
 # Sama seperti kompres gambar, tetapi versi L dan LA
 def kompresgambargrey(matriksawal, rasio, transparan):
-    i , k= banyaknyaKdigunakan(matriksawal,rasio)
+    k= banyaknyaKdigunakan(matriksawal,rasio)
     if (transparan):
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 2))  #Inisialisasi matriks kosong sebagai hasilnya
-        kiri, tengah, kanan = numpy.linalg.svd(matriksawal[:,:,0]) 
+        kiri, tengah, kanan = svd(matriksawal[:,:,0], k) 
     else :
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1])) 
-        kiri, tengah, kanan = numpy.linalg.svd(matriksawal) # ini dekomposisi jadi kiri tengah kanan
+        kiri, tengah, kanan = svd(matriksawal,k) # ini dekomposisi jadi kiri tengah kanan
     tengah = numpy.diag(tengah) #biar tengahnya jadi matriks, bukan array berisi singular values
     if (transparan) :
         matrikshasil[:,:,0] = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] #mengalikan kembali matriksnya kalau transparan
@@ -96,7 +153,7 @@ def kompresgambargrey(matriksawal, rasio, transparan):
     else :
         matrikshasil = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] #mengalikan kembali matriksnya kalau tidak transparan
     hasilgambar = matrikstogambar(matrikshasil)
-    return hasilgambar, i , k
+    return hasilgambar
 
 # ALGORITMA
 
@@ -122,21 +179,17 @@ def main(gambar,ratio):
 
     if (matriksawal.ndim == 3) : 
         if (matriksawal.shape[2] == 3) : # KASUS RGB 
-            gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambar(matriksawal, rasio) 
-        elif (matriksawal.shape[2] == 2) : # KASUS LA
-            gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargreytransparan(matriksawal, rasio) 
+            gambarakhir = kompresgambarwarna(matriksawal, rasio,False) 
         elif (matriksawal.shape[2] == 4) : # KASUS RGBA 
-            gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambartransparan(matriksawal, rasio) 
+            gambarakhir = kompresgambarwarna(matriksawal, rasio,True) 
+        elif (matriksawal.shape[2] == 2) : # KASUS LA
+            gambarakhir = kompresgambargrey(matriksawal, rasio, True) 
         if (modeP) :
-            gambarakhir = gambarakhir.convert('P')
+            gambarakhir = gambarakhir.convert('P') # KASUS P DICONVERT BALIK
         if (modePA) :
-            gambarakhir = gambarakhir.convert('PA')
-    elif (matriksawal.ndim == 2) : # KASUS GREYSCALE (L) 
-            gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargrey(matriksawal,rasio)
-
-
-    # print("Banyaknya singular values adalah:", banyaksingularvalue)
-    # print("Banyaknya singular values digunakan adalah", singularvaluedigunakan)
+            gambarakhir = gambarakhir.convert('PA') # KASUS PA DICONVERT BALIK
+    elif (matriksawal.ndim == 2) : # KASUS L 
+            gambarakhir = kompresgambargrey(matriksawal,rasio, False)
 
     # gambarakhir.show()
     # MENYIMPAN HASILNYA KE file django?
@@ -158,3 +211,4 @@ def main(gambar,ratio):
     # print('SEKIAN DARI S4R4PP')
 # a,b = main('./transparan.png',20)
 # print(b)
+
