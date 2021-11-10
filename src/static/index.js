@@ -102,7 +102,7 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
       var afterImg = document.getElementById('after-image');
 
       beforeImg.src = URL.createObjectURL(inputFiles.files[0]);
-      afterImg.src = URL.createObjectURL(inputFiles.files[0]);
+      // afterImg.src = URL.createObjectURL(inputFiles.files[0]);
 
       reader.addEventListener("load",() => {
         sessionStorage.setItem("image" , reader.result);

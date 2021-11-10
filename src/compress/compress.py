@@ -2,6 +2,8 @@ from PIL import Image
 import numpy
 import os
 import time
+import base64
+from io import BytesIO,StringIO
 # Kalau misal nanti dipakai komentarnya dihapus aja buat baca URL jadi gambar dan sebaliknya
 '''import requests 
 from io import BytesIO, StringIO
@@ -106,57 +108,61 @@ def kompresgambargrey(matriksawal, rasio):
 
 # ALGORITMA
 
-print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
+# print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
+def main(gambar,ratio):
+    # KALAU BUKANYA DARI URL :
+    '''response = requests.get(url)
+    #gambarawal = Image.open(BytesIO(response.content)) INI CONVERT URL JADI GAMBAR '''
+    gambarawal = Image.open(gambar)# ini yang secara manual, bisa dihapus nanti
+    modeawal = gambarawal.mode
+    modePA = False # UNTUK MENGECEK MODE AWALNYA APAKAH TRANSPARAN P ATAU PA KARENA MEMPROSESNYA BEDA
+    modeP = False
+    if gambarawal.mode == 'P' :
+        gambarawal = gambarawal.convert('RGBA')
+        modeP = True
+    if gambarawal.mode == 'PA':
+        gambarawal = gambarawal.convert('RGBA')
+        modePA = True
+    matriksawal = numpy.array(gambarawal)  # convert gambarnya jadi matriks
 
-# KALAU BUKANYA DARI URL :
-'''response = requests.get(url)
-#gambarawal = Image.open(BytesIO(response.content)) INI CONVERT URL JADI GAMBAR '''
-gambarawal = Image.open('./transparan.png')# ini yang secara manual, bisa dihapus nanti
-modeawal = gambarawal.mode
-modePA = False # UNTUK MENGECEK MODE AWALNYA APAKAH TRANSPARAN P ATAU PA KARENA MEMPROSESNYA BEDA
-modeP = False
-if gambarawal.mode == 'P' :
-    gambarawal = gambarawal.convert('RGBA')
-    modeP = True
-if gambarawal.mode == 'PA':
-    gambarawal = gambarawal.convert('RGBA')
-    modePA = True
-matriksawal = numpy.array(gambarawal)  # convert gambarnya jadi matriks
+    rasio = ratio #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
+    waktuawal = time.time()
 
-rasio = float(input("Masukkan rasio yang anda inginkan (dalam persen): ")) #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
-waktuawal = time.time()
-
-if (matriksawal.ndim == 3) : 
-    if (matriksawal.shape[2] == 3) : # KASUS RGB 
-        gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambar(matriksawal, rasio) 
-    elif (matriksawal.shape[2] == 2) : # KASUS LA
-        gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargreytransparan(matriksawal, rasio) 
-    elif (matriksawal.shape[2] == 4) : # KASUS RGBA 
-        gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambartransparan(matriksawal, rasio) 
-    if (modeP) :
-        gambarakhir = gambarakhir.convert('P')
-    if (modePA) :
-        gambarakhir = gambarakhir.convert('PA')
-elif (matriksawal.ndim == 2) : # KASUS GREYSCALE (L) 
-        gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargrey(matriksawal,rasio)
+    if (matriksawal.ndim == 3) : 
+        if (matriksawal.shape[2] == 3) : # KASUS RGB 
+            gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambar(matriksawal, rasio) 
+        elif (matriksawal.shape[2] == 2) : # KASUS LA
+            gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargreytransparan(matriksawal, rasio) 
+        elif (matriksawal.shape[2] == 4) : # KASUS RGBA 
+            gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambartransparan(matriksawal, rasio) 
+        if (modeP) :
+            gambarakhir = gambarakhir.convert('P')
+        if (modePA) :
+            gambarakhir = gambarakhir.convert('PA')
+    elif (matriksawal.ndim == 2) : # KASUS GREYSCALE (L) 
+            gambarakhir, banyaksingularvalue, singularvaluedigunakan = kompresgambargrey(matriksawal,rasio)
 
 
-print("Banyaknya singular values adalah:", banyaksingularvalue)
-print("Banyaknya singular values digunakan adalah", singularvaluedigunakan)
+    # print("Banyaknya singular values adalah:", banyaksingularvalue)
+    # print("Banyaknya singular values digunakan adalah", singularvaluedigunakan)
 
-gambarakhir.show()
-# MENYIMPAN HASILNYA KE file django?
-'''hasilIO = StringIO.StringIO()
-gambarakhir.save(hasilIO, "PNG")
-filehasil = inMemoryUploadedFile(hasilIO, None, 'compressed.png' , hasilIO.len, None)'''
+    # gambarakhir.show()
+    # MENYIMPAN HASILNYA KE file django?
+    # hasilIO = StringIO()
+    # gambarakhir.save(hasilIO, "PNG")
+    # filehasil = inMemoryUploadedFile(hasilIO, None, 'compressed.png' , hasilIO.len, None)
 
-#print(modeawal)
-#print(gambarakhir.mode)
-#print(gambarawal.size)
-#print(gambarakhir.size)
-
-waktuakhir = time.time()
-waktueksekusi = waktuakhir - waktuawal
-print("Waktu eksekusi program adalah", waktueksekusi)
-
-print('SEKIAN DARI S4R4PP')
+    buffered = BytesIO()
+    gambarakhir.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue())
+    #print(modeawal)
+    #print(gambarakhir.mode)
+    #print(gambarawal.size)
+    #print(gambarakhir.size)
+    waktuakhir = time.time()
+    waktueksekusi = waktuakhir - waktuawal
+    # print("Waktu eksekusi program adalah", waktueksekusi)
+    return [img_str,waktueksekusi]
+    # print('SEKIAN DARI S4R4PP')
+# a,b = main('./transparan.png',20)
+# print(b)
