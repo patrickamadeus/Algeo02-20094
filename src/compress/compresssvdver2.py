@@ -26,8 +26,11 @@ def power_svd(A, iters):
     u = A.dot(v) / sigma
     return numpy.reshape(u, (A.shape[0], 1)), sigma, numpy.reshape(v, (A.shape[1], 1))
 
-def svd(A, iterations=100):
-    rank = numpy.linalg.matrix_rank(A)
+def svd(A, iterations=10):
+    if (A.shape[0] > A.shape[1]) :
+        rank = A.shape[1]
+    else :
+        rank = A.shape[0]
     U = numpy.zeros((A.shape[0], 1))
     S = []
     V = numpy.zeros((A.shape[1], 1))
