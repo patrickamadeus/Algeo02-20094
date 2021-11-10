@@ -133,16 +133,7 @@ def main(gambar,ratio):
     '''response = requests.get(url)
     #gambarawal = Image.open(BytesIO(response.content)) INI CONVERT URL JADI GAMBAR '''
     gambarawal = Image.open(gambar)# ini yang secara manual, bisa dihapus nanti
-    modeawal = gambarawal.mode
-    modePA = False # UNTUK MENGECEK MODE AWALNYA APAKAH TRANSPARAN P ATAU PA KARENA MEMPROSESNYA BEDA
-    modeP = False
-    if gambarawal.mode == 'P' :
-        gambarawal = gambarawal.convert('RGBA')
-        modeP = True
-    if gambarawal.mode == 'PA':
-        gambarawal = gambarawal.convert('RGBA')
-        modePA = True
-    matriksawal = numpy.array(gambarawal)  # convert gambarnya jadi matriks
+    modeP, modePA, matriksawal = gambartomatriks(gambarawal) # convert gambarnya jadi matriks
 
     rasio = ratio #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
     waktuawal = time.time()
