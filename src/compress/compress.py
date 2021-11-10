@@ -19,7 +19,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile'''
 # ALGORITMA
 
 # Fungsi SVD
-def svd(A, rank, iterations=10):
+def svd(A, rank):
     # Membuat definisi panggilan
     row = len(A)
     col = len(A[0])
@@ -42,7 +42,7 @@ def svd(A, rank, iterations=10):
 
         # Mencari nilai x
         x = random.normal(0, sigma, size=col)
-        for i in range(iterations):
+        for i in range(10): #10 = jumlah iterasi
             x = numpy.dot(B, x)
         
         # Mencari nilai distribusi gauss
