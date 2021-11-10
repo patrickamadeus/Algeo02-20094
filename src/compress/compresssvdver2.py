@@ -2,9 +2,7 @@ from PIL import Image
 import numpy
 import os
 import time
-from numpy.linalg import norm
-from random import normalvariate
-from math import sqrt
+from numpy import random, linalg
 # Kalau misal nanti dipakai komentarnya dihapus aja buat baca URL jadi gambar dan sebaliknya
 '''import requests 
 from io import BytesIO, StringIO
@@ -14,34 +12,53 @@ from django.core.files.uploadedfile import InMemoryUploadedFile'''
 # SOALNYA DI SPEK TUBES TULISANNYA "formatnya dibebaskan, cth: Jumlah singular value yang digunakan"
 
 # KAMUS
-def power_svd(A, iters):
-    mu, sigma = 0, 1
-    x = numpy.random.normal(mu, sigma, size=A.shape[1])
-    B = A.T.dot(A)
-    for i in range(iters):
-        new_x = B.dot(x)
-        x = new_x
-    normx = numpy.linalg.norm(x)
-    v = numpy.divide(x,normx,where=normx!=0)
-    sigma = numpy.linalg.norm(A.dot(v))
-    Av = A.dot(v) 
-    u = numpy.divide(Av,sigma,where=sigma!=0)
-    return numpy.reshape(u, (A.shape[0], 1)), sigma, numpy.reshape(v, (A.shape[1], 1))
-
 def svd(A, rank, iterations=10):
-    U = numpy.zeros((A.shape[0], 1))
+    # Assign values
+    row = len(A)
+    col = len(A[0])
+
+    # Initialize matrix
+    U = numpy.zeros((row, 1))
     S = []
-    V = numpy.zeros((A.shape[1], 1))
+    V = numpy.zeros((col, 1))
 
-    # SVD using Power Method
+    # Do the SVD using the power method
     for i in range(rank):
-        u, sigma, v = power_svd(A, iterations)
-        U = numpy.hstack((U, u))
-        S.append(sigma)
-        V = numpy.hstack((V, v))
-        A = A - u.dot(v.T).dot(sigma)
+        # Assign initial value
+        sigma = 1
 
-    return U[:, 1:], S, V[:, 1:].T
+        # Transpose the A matrix
+        AT = numpy.transpose(A)
+
+        # Find the dot product of A transpose & A itself
+        B = numpy.dot(AT, A)
+
+        # Assigning the x value
+        x = random.normal(0, sigma, size=col)
+        for i in range(iterations):
+            x = numpy.dot(B, x)
+        
+        # Find the random distribution
+        normx = numpy.linalg.norm(x)
+        v = numpy.divide(x,normx,where=normx!=0)
+        
+        # Assign the sigma value
+        sigma = linalg.norm(numpy.dot(A, v))
+        Av = numpy.dot(A, v)
+        S.append(sigma)
+
+        # Assign the U matrix
+        u = numpy.reshape(numpy.divide(Av,sigma,where=sigma!=0), (row, 1))
+        U = numpy.hstack((U, u))
+
+        # Assign the V matrix
+        v = numpy.reshape(v, (col, 1))
+        V = numpy.hstack((V, v))
+
+        # Assigning the new A matrix
+        A = A - numpy.dot(numpy.dot(u, numpy.transpose(v)), sigma)
+    
+    return U[:, 1:], S, numpy.transpose(V[:, 1:])
 
 def banyaknyaKdigunakan(matriksawal,rasio):
     baris, kolom = matriksawal.shape[0], matriksawal.shape[1], 
@@ -137,7 +154,7 @@ def kompresgambargrey(matriksawal, rasio, transparan):
 # KALAU BUKANYA DARI URL :
 '''response = requests.get(url)
 #gambarawal = Image.open(BytesIO(response.content)) INI CONVERT URL JADI GAMBAR '''
-gambarawal = Image.open('./temp.png')# ini yang secara manual, bisa dihapus nanti
+gambarawal = Image.open('./src/compress/jokowi.jpeg')# ini yang secara manual, bisa dihapus nanti
 print(gambarawal.mode)
 modePA = False # UNTUK MENGECEK MODE AWALNYA APAKAH TRANSPARAN P ATAU PA KARENA MEMPROSESNYA BEDA
 modeP = False
