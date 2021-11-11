@@ -31,22 +31,25 @@ def upload_image():
         flash('No file part')
         return redirect(request.url) 
     file = request.files['file']
+    rate = request.form['rate']
     if file.filename == '':
         flash('No image selected for uploading')
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
+        basename = filename + "-ori"
 
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], basename))
         #main process on compressing image
-        img_str, secs = main(file, 90)
+        img_str, secs = main(file, int(rate))
 
         #decode base64 jadi image lagi
         image = base64.b64decode(img_str)       
         img = Image.open(io.BytesIO(image))
 
         img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        flash('Compressed in '+str(secs)+' s')
-        return render_template('index.html', filename=filename)
+        flash(rate + ' % compressed in '+str(round(secs,3))+' s')
+        return render_template('index.html', filename=filename, basename = basename)
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)

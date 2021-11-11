@@ -28,14 +28,14 @@
 
     <!-- Upload Image Section -->
     <div class="image-report">
-      <h5><strong>Upload Image</strong></h5>
-      <br/>
+      <!-- <h5><strong>Upload Image</strong></h5>
+      <br/> -->
 
       <div class = "main-text-side">
         Algeo20094
       </div>
 
-      <div class = "form-side">
+      <!-- <div class = "form-side">
         <form id="reportImage" enctype="multipart/form-data" method="POST" action="/result">  
           <div class="drop-zone">
             <div class="drop-zone__prompt">Drop image here / click to upload</div>
@@ -44,18 +44,18 @@
 
 
           <div id = "compressionSlider">
-            <!-- <input type="range" min="0" max="100" value="0" class="compressionrate" id="reportCompression" name = "rate"> -->
-            <!-- <p>Compression Rate : <span id="rateShow"></span> %</p> -->
+            <input type="range" min="0" max="100" value="0" class="compressionrate" id="reportCompression" name = "rate">
+            <p>Compression Rate : <span id="rateShow"></span> %</p>
           </div>
           <input class="file_submit" type="Submit">
             <button type="submit" form="reportImage" data-bs-toggle="modal" data-bs-target="#submitted" id = "upload-button">Upload</button>
         </form>
-      </div>
+      </div> -->
     </div>
 
     <!-- COBA COBA LEE -->
-  <form method="post" action="/" enctype="multipart/form-data" >
-        <input type="file" name="file" class="form-control" autocomplete="off" required>
+  <form method="post" action="/" enctype="multipart/form-data" id = "main-form">
+        <input type="file" name="file" class="form-control" autocomplete="off" id = "file" required>
         <input type="range" min="0" max="100" value="0" class="compressionrate"  name = "rate" id = "reportCompression">
         <p>Compression Rate : <span id="rateShow"></span> %</p>
       <p>
@@ -107,7 +107,9 @@
 
       <div class="row">
         <div class="column">
-          <img src="{{url_for('static', filename='./assets/no-image.jpg') }}" alt="Before" style="width:75%" id = "before-image">
+          {% if basename %}
+            <img src="{{ url_for('display_image', filename=basename) }}" style="width: 75%;" alt = "Before" id = "before-image">
+          {% endif %}
         </div>
         <div class="column">
           {% if filename %}
