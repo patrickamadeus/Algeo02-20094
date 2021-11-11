@@ -52,8 +52,10 @@ Oleh karena itu, apabila ingin menggunakan website ini, jangan lupa untuk mengun
 ## Usage
 Tanpa banyak basa-basi, yuk coba pake website buatan kita!
 
-`git clone https://github.com/patrickamadeus/Algeo02-20094.git`
-`cd src`
-`python app.py`
+```
+git clone https://github.com/patrickamadeus/Algeo02-20094.git
+cd src
+python app.py
+```
 
 Kemudian, akan muncul sebuah link dan kamu tinggal menekan <ctrl> sambil mengarahkan kursor ke link tersebut dan **VOILA!!**, web akan terbuka dan siap untuk digunakan!
