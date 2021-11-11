@@ -124,12 +124,11 @@
   const submit = document.getElementById("show-button");
 
   submit.onclick = function () {
-    if (targetDiv.style.display !== "block") {
-      targetDiv.style.display = "block";
-    }
-    else{
-      targetDiv.style.display = "none";
-    }
+    const div = document.getElementById('compression-result')
+    const img = document.querySelector("#file")
+    console.log(img.clientHeight);
+
+    div.classList.toggle("show")
   };
 
 

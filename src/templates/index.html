@@ -23,17 +23,24 @@
   <body>
     <!-- Navigation Bar -->
     <nav>
-      <h2 id = "nav-text">SVD Image Compressor</h2>
+        <div class="navbar-header">
+          <a class="navbar-logo" href="#">
+              <img src="/src/static/assets/background-network.jpg"/>
+              SVD <br/> Image Compressor
+          </a>
+      </div>
     </nav>
-
+    <br><br>
+    <h2>Website ini dibuat untuk melatih kesabaran pengguna!</h2>
+    <h5>Oleh karena itu, jangan heran apabila waktu kompresi yang dibutuhkan cukup lama</h5>
     <!-- Upload Image Section -->
     <div class="image-report">
       <!-- <h5><strong>Upload Image</strong></h5>
       <br/> -->
 
-      <div class = "main-text-side">
+      <!-- <div class = "main-text-side">
         Algeo20094
-      </div>
+      </div> -->
 
       <!-- <div class = "form-side">
         <form id="reportImage" enctype="multipart/form-data" method="POST" action="/result">  
@@ -54,14 +61,17 @@
     </div>
 
     <!-- COBA COBA LEE -->
-  <form method="post" action="/" enctype="multipart/form-data" id = "main-form">
-        <input type="file" name="file" class="form-control" autocomplete="off" id = "file" required>
-        <input type="range" min="0" max="100" value="0" class="compressionrate"  name = "rate" id = "reportCompression">
-        <p>Compression Rate : <span id="rateShow"></span> %</p>
-      <p>
-          <input type="submit" value="Submit" class="btn btn-info">
-      </p>
-  </form>
+  <div id = "form-part">
+    <form method="post" action="/" enctype="multipart/form-data" id = "main-form">
+      <input type="file" name="file" class="form-control" autocomplete="off" id = "file" required>
+      <br>
+      <input type="range" min="0" max="100" value="0" class="compressionrate"  name = "rate" id = "reportCompression">
+      <p>Compression Rate : <span id="rateShow"></span> %</p>
+    <p>
+        <input type="submit" value="Submit" class="btn btn-info">
+    </p>
+    </form>
+  </div>
 
 
     <!-- <div id="terimakasih" class="modal fade" tabindex="-1">
@@ -108,7 +118,7 @@
           <h1><span id = "perc"></span></h1>
         </div>
       </div>
-
+      
       <div class="row">
         <div class="column">
           {% if basename %}
@@ -121,11 +131,11 @@
           {% endif %}
         </div>
       </div>
+    </div>
 
-    </div>
-    <div id = "download-button">
-      <button id = "download">Download Result</button>
-    </div>
+      <div id = "download-button">
+        <button id = "download">Download Result</button>
+      </div>
 
     <script src="{{url_for('static', filename='index.js') }}"></script> <!-- BAGIAN JS BELOM-->
     <script src="{{url_for('static', filename='FileSaver.js') }}"></script>

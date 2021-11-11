@@ -13,7 +13,7 @@ UPLOAD_FOLDER = 'static/assets/'
  
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+# app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
  
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
  
@@ -38,7 +38,7 @@ def upload_image():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         basename = filename + "-ori"
-        text = "Compression sudah kelar ngab hehe :D"
+        text = "Compression process for " + filename + " finished"
 
         #save image original
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], basename))
