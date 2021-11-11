@@ -56,4 +56,4 @@ Tanpa banyak basa-basi, yuk coba pake website buatan kita!
 `cd src`
 `python app.py`
 
-Kemudian, akan muncul sebuah link dan kamu tinggal menekan <ctrl> sambil mengarahkan kursor ke link tersebut, dan **VOILA!!**, web akan terbuka dan siap untuk digunakan!
+Kemudian, akan muncul sebuah link dan kamu tinggal menekan <ctrl> sambil mengarahkan kursor ke link tersebut dan **VOILA!!**, web akan terbuka dan siap untuk digunakan!
