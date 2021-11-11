@@ -1,7 +1,7 @@
 # Algeo02-20094
 > Halo! Selamat datang di repository website *image compressor* S4RaP !!
 
-*Website image compressor* ini dibuat oleh :
+*Website image compressor* ini dibuat oleh kelompok 32 yang beranggotakan :
 - Saul Sayers (13520094)
 - Patrick Amadeus Irawan (13520109)
 - Rania Dwi Fadhilah (13520142)
