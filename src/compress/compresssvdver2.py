@@ -12,53 +12,53 @@ from django.core.files.uploadedfile import InMemoryUploadedFile'''
 # SOALNYA DI SPEK TUBES TULISANNYA "formatnya dibebaskan, cth: Jumlah singular value yang digunakan"
 
 # KAMUS
-def svd(A, rank, iterations=10):
-    # Assign values
-    row = len(A)
-    col = len(A[0])
 
-    # Initialize matrix
-    U = numpy.zeros((row, 1))
-    S = []
-    V = numpy.zeros((col, 1))
+# Fungsi SVD menggunakan aproksimasi nilai singular dengan metode power method.
+def svd(matriksawal, k):
+    # Membuat definisi panggilan
+    baris = len(matriksawal)
+    kolom = len(matriksawal[0])
 
-    # Do the SVD using the power method
-    for i in range(rank):
-        # Assign initial value
-        sigma = 1
+    # Menginisialisasi matriks hasil dekomposisi svd
+    kiri = numpy.zeros((baris, 1))
+    tengah = []
+    kanan = numpy.zeros((kolom, 1))
 
-        # Transpose the A matrix
-        AT = numpy.transpose(A)
+    # Mencari nilai matriks untuk sebanyak k awal yang dibutuhkan
+    for i in range(k):
+        # Men-transpose matriks awal
+        matriksawaltranspos = numpy.transpose(matriksawal)
 
-        # Find the dot product of A transpose & A itself
-        B = numpy.dot(AT, A)
+        # Mencari hasil perkalian dot dari transpos matriks awal dengan matriks awal itu sendiri
+        matriksgabungan = numpy.dot(matriksawaltranspos, matriksawal)
 
-        # Assigning the x value
-        x = random.normal(0, sigma, size=col)
-        for i in range(iterations):
-            x = numpy.dot(B, x)
+        # Mencari nilai x
+        x = random.normal(0, 1, size=kolom)
+        for j in range(10): # pengulangan sebanyak 10 kali untuk memastikan vektor x yang didapat seakurat mungkin
+            x = numpy.dot(matriksgabungan, x)
         
-        # Find the random distribution
+        # Mencari nilai distribusi gauss
         normx = numpy.linalg.norm(x)
         v = numpy.divide(x,normx,where=normx!=0)
         
-        # Assign the sigma value
-        sigma = linalg.norm(numpy.dot(A, v))
-        Av = numpy.dot(A, v)
-        S.append(sigma)
+        # mencari nilai singularnya dan menambahkan ke matriks tengah
+        nilaisingular = linalg.norm(numpy.dot(matriksawal, v))
+        matriksawalv = numpy.dot(matriksawal, v)
+        tengah.append(nilaisingular)
 
-        # Assign the U matrix
-        u = numpy.reshape(numpy.divide(Av,sigma,where=sigma!=0), (row, 1))
-        U = numpy.concatenate((U,u), axis = 1)
+        # Mengisi matriks kiri
+        u = numpy.reshape(numpy.divide(matriksawalv,nilaisingular,where=nilaisingular!=0), (baris, 1))
+        kiri = numpy.concatenate((kiri,u), axis = 1)
 
-        # Assign the V matrix
-        v = numpy.reshape(v, (col, 1))
-        V = numpy.concatenate((V,v), axis = 1)
+        # Mengisi matriks kanan
+        v = numpy.reshape(v, (kolom, 1))
+        kanan = numpy.concatenate((kanan,v), axis = 1)
 
-        # Assigning the new A matrix
-        A = A - numpy.dot(numpy.dot(u, numpy.transpose(v)), sigma)
+        # Mengurangi matriks awal sebelumnya untuk diproses next valuenya
+        matriksawal = matriksawal - numpy.dot(numpy.dot(u, numpy.transpose(v)), nilaisingular)
     
-    return U[:, 1:], S, numpy.transpose(V[:, 1:])
+    # Mengembalikan kiri,tengah, dan kanan transpose
+    return kiri[:, 1:], tengah, numpy.transpose(kanan[:, 1:])
 
 def banyaknyaKdigunakan(matriksawal,rasio):
     baris, kolom = matriksawal.shape[0], matriksawal.shape[1], 
@@ -84,6 +84,7 @@ def gambartomatriks(gambarawal):
 
 # Fungsi ini mengubah matriks ke gambar, diubah ke unsigned int 0 - 255 dahulu sesuai elemen RGB / L
 def matrikstogambar(matrikshasil):
+    numpy.clip(matrikshasil,0,255,matrikshasil)
     matriksunsigned = matrikshasil.astype('uint8') 
     hasilgambar = Image.fromarray(matriksunsigned)
     return hasilgambar
@@ -154,7 +155,7 @@ def kompresgambargrey(matriksawal, rasio, transparan):
 # KALAU BUKANYA DARI URL :
 '''response = requests.get(url)
 #gambarawal = Image.open(BytesIO(response.content)) INI CONVERT URL JADI GAMBAR '''
-gambarawal = Image.open('./src/compress/jokowi.jpeg')# ini yang secara manual, bisa dihapus nanti
+gambarawal = Image.open('./sarap.png')# ini yang secara manual, bisa dihapus nanti
 print(gambarawal.mode)
 modePA = False # UNTUK MENGECEK MODE AWALNYA APAKAH TRANSPARAN P ATAU PA KARENA MEMPROSESNYA BEDA
 modeP = False
