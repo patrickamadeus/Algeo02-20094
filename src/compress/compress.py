@@ -85,7 +85,8 @@ def gambartomatriks(gambarawal):
     return modeP, modePA, matriksawal
 
 # Fungsi ini mengubah matriks ke gambar, diubah ke unsigned int 0 - 255 dahulu sesuai elemen RGB / L
-def matrikstogambar(matrikshasil):
+def matrikstogambar(matrikshasil):   
+    numpy.clip(matrikshasil,0,255,matrikshasil)
     matriksunsigned = matrikshasil.astype('uint8') 
     hasilgambar = Image.fromarray(matriksunsigned)
     return hasilgambar
