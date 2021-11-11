@@ -64,7 +64,7 @@
   </form>
 
 
-    <div id="terimakasih" class="modal fade" tabindex="-1">
+    <!-- <div id="terimakasih" class="modal fade" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-container modal-content">
           <p>Please insert image!</p>
@@ -85,7 +85,11 @@
         </div>
       </div>
     </div>
-    <br>
+    <br> -->
+    {% if text %}
+      <h2>{{ text }} </h2>
+    {% endif %}
+
 
     <button id = "show-button">Toggle Show Result</button>
     <div id="compression-result">

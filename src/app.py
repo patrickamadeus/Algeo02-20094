@@ -38,7 +38,9 @@ def upload_image():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         basename = filename + "-ori"
+        text = "Compression sudah kelar ngab hehe :D"
 
+        #save image original
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], basename))
         #main process on compressing image
         img_str, secs = main(file, int(rate))
@@ -49,7 +51,7 @@ def upload_image():
 
         img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         flash(rate + ' % compressed in '+str(round(secs,3))+' s')
-        return render_template('index.html', filename=filename, basename = basename)
+        return render_template('index.html', filename=filename, basename = basename, text=text)
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
