@@ -1,22 +1,29 @@
+### Compress.py ###
+# Terdiri atas fungsi-fungsi yang digunakan untuk mengkompres suatu gambar
+# Nama pembuat kode :
+# 1. Saul Sayers
+# 2. Patrick Amadeus Irawan
+# 3. Rania Dwi Fadhilah
+
+## Import library ##
 from PIL import Image
 import numpy
-import os
 import time
+import os
 import base64
-from io import BytesIO,StringIO
+from io import BytesIO, StringIO
 from numpy import random, linalg
 # Kalau misal nanti dipakai komentarnya dihapus aja buat baca URL jadi gambar dan sebaliknya
 '''import requests 
 from io import BytesIO, StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile'''
 
-# BTW INI AKU ASUMSI RASIO (TINGKAT KOMPRESI) ITU PERBANDINGAN SINGULAR_VALUES_DIGUNAKAN / SINGULAR_VALUES_TOTAL YA GAIS
-# SOALNYA DI SPEK TUBES TULISANNYA "formatnya dibebaskan, cth: Jumlah singular value yang digunakan"
-
 # KAMUS
-
-# Fungsi SVD menggunakan aproksimasi nilai singular dengan metode power method.
 def svd(matriksawal, k):
+    # Fungsi SVD menggunakan aproksimasi nilai singular dengan metode power method.
+    # Parameter : matriks dan integer
+    # Return : matriks U, sigma, dan V transpose
+
     # Membuat definisi panggilan
     baris = len(matriksawal)
     kolom = len(matriksawal[0])
@@ -63,6 +70,10 @@ def svd(matriksawal, k):
     return kiri[:, 1:], tengah, numpy.transpose(kanan[:, 1:])
 
 def banyaknyaKdigunakan(matriksawal,rasio):
+    # Fungsi untuk menghitung banyaknya k yang akan digunakan
+    # Parameter : matriks dan integer
+    # Return : integer
+
     baris, kolom = matriksawal.shape[0], matriksawal.shape[1], 
     if baris < kolom :
         total = baris
@@ -71,8 +82,11 @@ def banyaknyaKdigunakan(matriksawal,rasio):
     digunakan = round((1-rasio/100)*total)
     return digunakan
 
-# Fungsi ini menconvert gambar ke matriks dengan mengecek modeawal terlebih dahulu.
 def gambartomatriks(gambarawal):
+    # Fungsi ini menconvert gambar ke matriks dengan mengecek modeawal terlebih dahulu.
+    # Parameter : gambar
+    # Return : matriks
+
     modePA = False # MENGECEK MODE AWALNYA APAKAH P ATAU PA, KARENA HARUS DICONVERT KE RGBA DULU AGAR AMAN
     modeP = False # KALAU MODE AWALNYA RGB,RGBA,L,LA SUDAH AMAN TERPROSES
     if gambarawal.mode == 'P' :
@@ -84,15 +98,21 @@ def gambartomatriks(gambarawal):
     matriksawal = numpy.array(gambarawal)  # convert gambarnya jadi matriks
     return modeP, modePA, matriksawal
 
-# Fungsi ini mengubah matriks ke gambar, diubah ke unsigned int 0 - 255 dahulu sesuai elemen RGB / L
-def matrikstogambar(matrikshasil):   
+def matrikstogambar(matrikshasil):  
+    # Fungsi ini mengubah matriks ke gambar, diubah ke unsigned int 0 - 255 dahulu sesuai elemen RGB / L
+    # Parameter : matriks
+    # Return : gambar
+     
     numpy.clip(matrikshasil,0,255,matrikshasil)
     matriksunsigned = matrikshasil.astype('uint8') 
     hasilgambar = Image.fromarray(matriksunsigned)
     return hasilgambar
 
-# Fungsi ini membuat RGB / L nya 0 apabila transparansinya 0 untuk menghemat memori. Parameter boolean berwarna untuk menentukan jenisnya
 def buangpixelsisa(matrikshasil, berwarna) :
+    # Fungsi ini membuat RGB / L nya 0 apabila transparansinya 0 untuk menghemat memori. Parameter boolean berwarna untuk menentukan jenisnya
+    # Parameter : matriks dan boolean
+    # Return : matriks
+
     if (berwarna):
         indekstransparansi = 3 #kalau RGBA, A ada di indeks 3. kalau LA, A ada di indeks 1
     else :
@@ -110,8 +130,11 @@ def buangpixelsisa(matrikshasil, berwarna) :
 # TLDR : ini ngambil matriks dari sebuah gambar, pake SVD, singular values dari matriks nya cuman dipake beberapa bergantung rasio
 # Trus matriksnya dikaliin lagi, diconvert balik jadi gambar. Trus ngereturn gambar hasil, banyaknya singular values, singular values digunakan
 
-# INI UNTUK KOMPRESI VERSI GAMBAR RGB UNTUK TIDAK TRANSPARAN, RGBA UNTUK TRANSPARAN
 def kompresgambarwarna(matriksawal, rasio,transparan):
+    # Fungsi untuk melakukan kompresi gambar RGB (untuk kasus tidak transparan) dan RGBA (untuk kasus transparan)
+    # Parameter : matriks, integer, dan boolean
+    # Return : gambar
+
     k= banyaknyaKdigunakan(matriksawal,rasio)
     if (transparan):
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 4)) #Inisialisasi matriks kosong sebagai hasilnya
@@ -127,8 +150,10 @@ def kompresgambarwarna(matriksawal, rasio,transparan):
     hasilgambar = matrikstogambar(matrikshasil)
     return hasilgambar
 
-# Sama seperti kompres gambar, tetapi versi L dan LA
 def kompresgambargrey(matriksawal, rasio, transparan):
+    # Fungsi untuk melakukan kompresi gambar L (untuk kasus tidak transparan) dan LA (untuk kasus transparan)
+    # Parameter : matriks, integer, dan boolean
+    # Return : gambar
     k= banyaknyaKdigunakan(matriksawal,rasio)
     if (transparan):
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 2))  #Inisialisasi matriks kosong sebagai hasilnya
