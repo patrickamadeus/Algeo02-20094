@@ -23,6 +23,7 @@ Website ini berfungsi untuk mengkompres suatu gambar.
 Input yang diterima oleh website antara lain adalah :
 - File gambar
 - *Compression rate*
+
 Sedangkan, output yang diberikan oleh website adalah :
 - Gambar sebelum dikompres
 - Gambar setelah dikompres (bisa di-*download*)
