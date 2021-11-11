@@ -1,7 +1,7 @@
 # Algeo02-20094
 > Halo! Selamat datang di repository website *image compressor* S4RaP !!
 
-Website *image compressor* ini dibuat oleh :
+*Website image compressor* ini dibuat oleh :
 - Saul Sayers (13520094)
 - Patrick Amadeus Irawan (13520109)
 - Rania Dwi Fadhilah (13520142)
@@ -18,13 +18,13 @@ Repository berisi website ini dibuat untuk memenuhi **Tugas Besar Mata Kuliah IF
 
 
 ## Overview
-Website ini berfungsi untuk mengkompres suatu gambar.
+*Website* ini berfungsi untuk mengkompres suatu gambar.
 
-Input yang diterima oleh website antara lain adalah :
+Input yang diterima oleh *website* antara lain adalah :
 - File gambar
 - *Compression rate*
 
-Sedangkan, output yang diberikan oleh website adalah :
+Sedangkan, output yang diberikan oleh *website* adalah :
 - Gambar sebelum dikompres
 - Gambar setelah dikompres (bisa di-*download*)
 - Waktu pemrosesan
@@ -38,8 +38,8 @@ Sedangkan, output yang diberikan oleh website adalah :
 - HTML
 
 ## Framework
-Untuk membuat *front end* dan *back end* website ini, kami menggunakan *framework* Flask.\
-Oleh karena itu, apabila ingin menggunakan website ini, jangan lupa untuk mengunduh Flask terlebih dahulu.
+Untuk membuat *front end* dan *back end website* ini, kami menggunakan *framework* Flask.\
+Oleh karena itu, apabila ingin menggunakan *website* ini, jangan lupa untuk mengunduh Flask terlebih dahulu.
 
 ## Screenshots
 <!-- ![Example screenshot](./img/screenshot.png) -->
@@ -51,7 +51,7 @@ Oleh karena itu, apabila ingin menggunakan website ini, jangan lupa untuk mengun
 
 
 ## Usage
-Tanpa banyak basa-basi, yuk coba pake website buatan kita!
+Tanpa banyak basa-basi, yuk coba pake *website* buatan kita!
 
 ```
 git clone https://github.com/patrickamadeus/Algeo02-20094.git
