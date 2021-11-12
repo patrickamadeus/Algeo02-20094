@@ -1,17 +1,23 @@
 body {
     padding: 0;
     margin: 0;
-    font-family: "Proza Libre", sans-serif;
+    /* font-family: "Proza Libre", sans-serif; */
+    font-family: 'Epilogue', sans-serif;
     /* background-image: url("background-network.jpg");
     background-repeat: no-repeat;
     background-position: 100px 20px; */
-    background-size: 55%;
+    background : url("3.svg") no-repeat;
+    background-size: cover;
     text-align: center;
     overflow-x: hidden;
   }
   
+  h1{
+    font-size: 4rem;
+    font-weight: 800;
+  }
   /* Navigation Bar */
-  nav {
+  /* nav {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,13 +25,54 @@ body {
     z-index: 1;
     width: 100%;
     top: 0;
-    /* background:linear-gradient(45deg, grey 50%, #292929 50%);  */
-    background-color: #292929;
+    background-color: #bae2e0;
+  } */
+
+  .container{
+    clear:both;
+    overflow:auto;
+    /* border-bottom-style: inset; */
+  }
+  
+  nav{float:right;}
+  
+  .logo img{float:left;}
+  
+  ul li{
+    display: inline-block; padding:10px;
+    font-size:20px; font-family:raleway;
+  }
+  
+  ul li:hover{
+    color:orange;
+    
   }
 
   .navbar-logo{
     display: inline;
     text-decoration: none;
+    font-size: 3rem;
+    font-weight: 900;
+  }
+
+  .button-about-us {
+    text-align: center;
+    background: #1b4d89;
+    color: white;
+    border: none;
+    width: 150px;
+    height: 45px;
+    margin: 7.5px 0 15px 0;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+    outline: none;
+    font-size: 1.2rem;
+  }
+
+  .button-about-us:hover{
+    background-color: white;
+    color: #1b4d89;
+    transition: all ease 0.4s;
   }
   
   /* nav ul {
@@ -155,7 +202,7 @@ body {
     border: 0;
   }
   
-  /* Modal */
+  /* Modal
   .modal-container {
     background: #f8faff;
     border: 3px solid #646464;
@@ -168,7 +215,7 @@ body {
     font-weight: 600;
     font-size: 1.5rem;
     text-align: center;
-  }
+  } */
   
   .button-scan {
     text-align: center;
@@ -258,10 +305,23 @@ body {
 #form-part {
   margin: 0 5cm 2cm 5cm;
   padding: 1cm 2cm 1cm 2cm;
-  border-style:groove;
+  /* border: inset;
+  border-color: #1b4d89 ; */
+  background : white;
+  box-shadow: 0px 0px 20px 10px #1b4d89;
 }
 
-.image-report form button {
+#submit-button {
+  background-color: #6db784;
+  border: none;
+}
+
+#submit-button:hover {
+  background: #4c7e5c;
+  transition: all ease 0.4s;
+}
+
+/* .image-report form button {
   float: right;
   text-align: center;
   color: #fff;
@@ -273,7 +333,7 @@ body {
   border-radius: 10px;
   transition: all 0.2s ease;
   outline: none;
-}
+} */
 
 #compressionSlider {
   width : 25%;
@@ -305,19 +365,19 @@ body {
 #show-button {
   text-align: center;
   color: #fff;
-  background: #4e4e4e;
+  background: #1b4d89;
   border: none;
   width: 200px;
   height: 30px;
-  margin: 0 0 15px 0;
-  border-radius: 10px;
+  margin: 15px 0 15px 0;
+  border-radius: 20px;
   transition: all 0.2s ease;
   outline: none;
   font-size: 15px;
 }
 
 #show-button:hover{
-  background: #2e2e2e;
+  background: #0e2542;
   box-shadow: 5px 10px 30px rgba(32, 32, 32, 0.911);
   transition: all ease 0.4s;
 }
@@ -344,7 +404,7 @@ body {
 #download-button button{
   text-align: center;
   color: #fff;
-  background: green;
+  background-color: #3b724c;
   border: none;
   width: 180px;
   height: 65px;
@@ -356,7 +416,30 @@ body {
 }
 
 #download-button button:hover{
-  background: rgba(24, 59, 18, 0.911);
+  background: rgba(17, 41, 13, 0.911);
   box-shadow: 5px 10px 30px rgba(32, 32, 32, 0.911);
   transition: all ease 0.4s;
 }
+
+#about-us {
+  margin-bottom: 3cm;
+}
+
+.card {
+  width: 30cm;
+  height: 7.5cm;
+  background-color: #1b4d89;
+}
+
+.top {
+  margin-left: 2.5cm;
+}
+
+.mid {
+  margin-left: 7.5cm;
+}
+
+
+
+
+/* slider design */
