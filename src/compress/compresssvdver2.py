@@ -1,6 +1,7 @@
 from PIL import Image
 import numpy
-import os
+import io
+import sys
 import time
 from numpy import random, linalg
 # Kalau misal nanti dipakai komentarnya dihapus aja buat baca URL jadi gambar dan sebaliknya
@@ -66,7 +67,7 @@ def banyaknyaKdigunakan(matriksawal,rasio):
         total = baris
     else :
         total = kolom
-    digunakan = round((1-rasio/100)*total)
+    digunakan = round((rasio/100)*total)
     return digunakan
 
 # Fungsi ini menconvert gambar ke matriks dengan mengecek modeawal terlebih dahulu.
@@ -111,7 +112,7 @@ def buangpixelsisa(matrikshasil, berwarna) :
 # INI UNTUK KOMPRESI VERSI GAMBAR RGB UNTUK TIDAK TRANSPARAN, RGBA UNTUK TRANSPARAN
 def kompresgambarwarna(matriksawal, rasio,transparan):
     k= banyaknyaKdigunakan(matriksawal,rasio)
-    print("banyaknya singularvalues total adalah", k/(1-rasio/100))
+    print("banyaknya singularvalues total adalah", k/(rasio/100))
     print("banyaknya singular values digunakan adalah", k)
     if (transparan):
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 4)) #Inisialisasi matriks kosong sebagai hasilnya
@@ -130,7 +131,7 @@ def kompresgambarwarna(matriksawal, rasio,transparan):
 # Sama seperti kompres gambar, tetapi versi L dan LA
 def kompresgambargrey(matriksawal, rasio, transparan):
     k= banyaknyaKdigunakan(matriksawal,rasio)
-    print("banyaknya singularvalues total adalah", k/(1-rasio/100))
+    print("banyaknya singularvalues total adalah", k/(rasio/100))
     print("banyaknya singular values digunakan adalah", k)
     if (transparan):
         matrikshasil = numpy.zeros((matriksawal.shape[0], matriksawal.shape[1], 2))  #Inisialisasi matriks kosong sebagai hasilnya
@@ -148,26 +149,24 @@ def kompresgambargrey(matriksawal, rasio, transparan):
     hasilgambar = matrikstogambar(matrikshasil)
     return hasilgambar
 
+def ngitungselisihpixel (gambarawal, gambarakhir): 
+    pairs = zip(gambarawal.getdata(), gambarakhir.getdata())
+    if len(gambarawal.getbands()) == 1:
+        dif = sum(abs(p1-p2) for p1,p2 in pairs)
+    else:
+        dif = sum(abs(c1-c2) for p1,p2 in pairs for c1,c2 in zip(p1,p2))
+    ncomponents = gambarawal.size[0] * gambarawal.size[1] * 3
+    print("\nMENGHITUNG PERSENTASE KOMPRESI DENGAN SELISIH PIXELNYA: ")
+    print(gambarawal.getbands())
+    print ("Persentase perbedaan pixel adalah", (dif / 255.0 * 100) / ncomponents)
 # ALGORITMA
 
 # print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
+gambarawal = Image.open('./jam.png')
+print("Format gambar awal:", gambarawal.mode)
+modeP, modePA, matriksawal = gambartomatriks(gambarawal) # convert gambarnya jadi matriks
 
-# KALAU BUKANYA DARI URL :
-'''response = requests.get(url)
-#gambarawal = Image.open(BytesIO(response.content)) INI CONVERT URL JADI GAMBAR '''
-gambarawal = Image.open('./sarap.png')# ini yang secara manual, bisa dihapus nanti
-print(gambarawal.mode)
-modePA = False # UNTUK MENGECEK MODE AWALNYA APAKAH TRANSPARAN P ATAU PA KARENA MEMPROSESNYA BEDA
-modeP = False
-if gambarawal.mode == 'P' :
-    gambarawal = gambarawal.convert('RGBA')
-    modeP = True
-if gambarawal.mode == 'PA':
-    gambarawal = gambarawal.convert('RGBA')
-    modePA = True
-matriksawal = numpy.array(gambarawal)  # convert gambarnya jadi matriks
-
-rasio = int(input("silahkan input rasio yang diinginkan dalam persen: ")) #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
+rasio = int(input("Silahkan input rasio K yang ingin digunakan: ")) #INPUT RASIO, NANTI DAPET DARI INPUT DI WEBSITE HARUSNYA
 waktuawal = time.time()
 
 if (matriksawal.ndim == 3) : 
@@ -185,7 +184,21 @@ elif (matriksawal.ndim == 2) : # KASUS L
         gambarakhir = kompresgambargrey(matriksawal,rasio, False)
 
 gambarakhir.show()
+print("Format gambar akhir:", gambarakhir.mode)
+bytesawal = io.BytesIO()
+gambarawal.save(bytesawal, 'png')
+
+bytesakhir = io.BytesIO()
+gambarakhir.save(bytesakhir, 'png')
+
+print("\nMENGHITUNG PERSENTASE PERBEDAAN PIXEL DENGAN BYTES AKHIR / BYTES AWAL: ")
+print("ukuran gambar awal adalah", bytesawal.tell(), "bytes")
+print("ukuran gambar akhir adalah", bytesakhir.tell(), "bytes")
+print("Persentase perubahan pixel adalah", abs(bytesawal.tell() - bytesakhir.tell())*100/bytesawal.tell(), "persen")
+gambarakhir.save("sarapcompressed.png")
+
+ngitungselisihpixel(gambarawal,gambarakhir)
 
 waktuakhir = time.time()
 waktueksekusi = waktuakhir - waktuawal
-print(waktueksekusi)
+print("waktu eksekusi program adalah", waktueksekusi)
