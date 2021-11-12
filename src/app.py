@@ -7,17 +7,8 @@ import base64
 import io
 from compress.compress import *
 
-
 app = Flask(__name__)
-UPLOAD_FOLDER = 'static/assets/'
- 
 app.secret_key = "secret key"
- 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
- 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
  
 @app.route('/')
 def home():
