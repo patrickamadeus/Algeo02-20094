@@ -184,7 +184,7 @@ def selisihpixel(gambarawal,gambarakhir):
         gambarakhir = gambarakhir.convert('RGBA')
         gambarawal = gambarawal.convert('RGBA')
     selisih = ImageChops.difference(gambarawal, gambarakhir)
-    selisih.show()
+    # selisih.show()
     selisihmatrix = numpy.array(selisih)
     if (gambarawal.mode == 'L'):
         persenselisih = selisihmatrix.sum()*100/(selisihmatrix.shape[0]*selisihmatrix.shape[1]*255)
@@ -220,13 +220,19 @@ def main(gambar,ratio):
     #persenselisih = selisihbytes(gambarawal,gambarakhir)
     #persenselisih = selisihpixel(gambarawal, gambarakhir)
 
+    #get base64 img string
     buffered = BytesIO()
     gambarakhir.save(buffered, format="PNG")
     img_str = base64.b64encode(buffered.getvalue())
+
+    #get Waktu Pemrosesan
     waktuakhir = time.time()
     waktueksekusi = waktuakhir - waktuawal
 
-    return [img_str,waktueksekusi]
+    #get persenselisih
+    persenselisih = round(selisihpixel(gambarawal, gambarakhir),3)
+
+    return [img_str,waktueksekusi,persenselisih]
 
 
 

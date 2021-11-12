@@ -40,12 +40,12 @@ def upload_image():
     encoded_ori_image = base64.b64encode(data.getvalue())
 
     #save compressed image via main function from compress.py
-    encoded_image, secs = main(file, int(rate))
+    encoded_image, secs, percent = main(file, int(rate))
 
     #String yang akan di-render ke HTML page
     text = "Compression process for " + filename + " finished in " + str(round(secs,3)) + " s"
     flash(rate + ' % compressed in '+str(round(secs,3))+' s')
-    return render_template('index.html', filename=encoded_image.decode('utf-8'), basename = encoded_ori_image.decode('utf-8'), text=text)
+    return render_template('index.html', filename=encoded_image.decode('utf-8'), basename = encoded_ori_image.decode('utf-8'),percent = percent, text=text)
 
 
 if __name__ == '__main__':

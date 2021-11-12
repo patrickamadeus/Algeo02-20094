@@ -1,11 +1,7 @@
 body {
     padding: 0;
     margin: 0;
-    /* font-family: "Proza Libre", sans-serif; */
     font-family: 'Epilogue', sans-serif;
-    /* background-image: url("background-network.jpg");
-    background-repeat: no-repeat;
-    background-position: 100px 20px; */
     background : url("3ver4.svg") no-repeat;
     background-size: cover;
     text-align: center;
@@ -27,15 +23,6 @@ body {
   
   .logo img{float:left;}
   
-  ul li{
-    display: inline-block; padding:10px;
-    font-size:20px; font-family:raleway;
-  }
-  
-  ul li:hover{
-    color:orange;
-    
-  }
 
   .navbar-logo{
     display: inline;
@@ -190,8 +177,8 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 0px 5%;
-    border-top: 2px solid rgba(167, 167, 167, 0.2);
-    background-color: #292929;
+    border-top: 2px solid #1b4d89;
+    background-color: #1b4d89;
     /* position: fixed; */
     bottom: 0;
     padding: 0 20px 0 20px;
