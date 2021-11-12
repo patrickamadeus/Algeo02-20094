@@ -32,7 +32,7 @@ Sedangkan, output yang diberikan oleh *website* adalah :
 
 
 ## Programming Language
-- Python
+- [_Python_](https://www.python.org/downloads/)
 - Java Script
 - CSS
 - HTML
