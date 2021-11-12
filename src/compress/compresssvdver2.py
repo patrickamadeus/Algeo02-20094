@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageChops
 import numpy
 import io
 import sys
@@ -149,20 +149,37 @@ def kompresgambargrey(matriksawal, rasio, transparan):
     hasilgambar = matrikstogambar(matrikshasil)
     return hasilgambar
 
-def ngitungselisihpixel (gambarawal, gambarakhir): 
-    pairs = zip(gambarawal.getdata(), gambarakhir.getdata())
-    if len(gambarawal.getbands()) == 1:
-        dif = sum(abs(p1-p2) for p1,p2 in pairs)
-    else:
-        dif = sum(abs(c1-c2) for p1,p2 in pairs for c1,c2 in zip(p1,p2))
-    ncomponents = gambarawal.size[0] * gambarawal.size[1] * 3
-    print("\nMENGHITUNG PERSENTASE KOMPRESI DENGAN SELISIH PIXELNYA: ")
-    print(gambarawal.getbands())
-    print ("Persentase perbedaan pixel adalah", (dif / 255.0 * 100) / ncomponents)
+def selisihbytes(gambarawal, gambarakhir):
+    bytesawal = io.BytesIO()
+    gambarawal.save(bytesawal, 'png')
+    bytesakhir = io.BytesIO()
+    gambarakhir.save(bytesakhir, 'png')
+    print("ukuran gambar awal adalah", bytesawal.tell(), "bytes")
+    print("ukuran gambar akhir adalah", bytesakhir.tell(), "bytes")
+    print("Persentase perubahan pixel adalah", abs(bytesawal.tell() - bytesakhir.tell())*100/bytesawal.tell(), "persen")
+    persenselisih = abs(bytesawal.tell() - bytesakhir.tell())*100/bytesawal.tell()
+    return persenselisih
+
+def selisihpixel(gambarawal,gambarakhir):
+    if gambarawal.mode == 'P' or gambarawal.mode == 'PA':
+        gambarakhir = gambarakhir.convert('RGBA')
+        gambarawal = gambarawal.convert('RGBA')
+    selisih = ImageChops.difference(gambarawal, gambarakhir)
+    selisih.show()
+    selisihmatrix = numpy.array(selisih)
+    if (gambarawal.mode == 'L'):
+        persenselisih = selisihmatrix.sum()*100/(selisihmatrix.shape[0]*selisihmatrix.shape[1]*255)
+    elif (gambarawal.mode == 'LA' ):
+        persenselisih = selisihmatrix[:,:,0].sum()*100/(selisihmatrix.shape[0]*selisihmatrix.shape[1]*255)
+    else :
+        persenselisih = selisihmatrix[:,:,0:3].sum()*100/(selisihmatrix.shape[0]*selisihmatrix.shape[1]*255*3)
+    return persenselisih
+
+    
 # ALGORITMA
 
 # print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
-gambarawal = Image.open('./jam.png')
+gambarawal = Image.open('../../test/jokowi.jpeg')
 print("Format gambar awal:", gambarawal.mode)
 modeP, modePA, matriksawal = gambartomatriks(gambarawal) # convert gambarnya jadi matriks
 
@@ -185,19 +202,9 @@ elif (matriksawal.ndim == 2) : # KASUS L
 
 gambarakhir.show()
 print("Format gambar akhir:", gambarakhir.mode)
-bytesawal = io.BytesIO()
-gambarawal.save(bytesawal, 'png')
 
-bytesakhir = io.BytesIO()
-gambarakhir.save(bytesakhir, 'png')
-
-print("\nMENGHITUNG PERSENTASE PERBEDAAN PIXEL DENGAN BYTES AKHIR / BYTES AWAL: ")
-print("ukuran gambar awal adalah", bytesawal.tell(), "bytes")
-print("ukuran gambar akhir adalah", bytesakhir.tell(), "bytes")
-print("Persentase perubahan pixel adalah", abs(bytesawal.tell() - bytesakhir.tell())*100/bytesawal.tell(), "persen")
-gambarakhir.save("sarapcompressed.png")
-
-ngitungselisihpixel(gambarawal,gambarakhir)
+persenselisih = selisihpixel(gambarawal,gambarakhir)
+print("Persentase perubahan pixel adalah", persenselisih, "persen")
 
 waktuakhir = time.time()
 waktueksekusi = waktuakhir - waktuawal

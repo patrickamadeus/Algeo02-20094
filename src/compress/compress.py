@@ -6,17 +6,14 @@
 # 3. Rania Dwi Fadhilah
 
 ## Import library ##
-from PIL import Image
+from PIL import Image, ImageChops
 import numpy
 import time
 import os
+import io
 import base64
 from io import BytesIO, StringIO
 from numpy import random, linalg
-# Kalau misal nanti dipakai komentarnya dihapus aja buat baca URL jadi gambar dan sebaliknya
-'''import requests 
-from io import BytesIO, StringIO
-from django.core.files.uploadedfile import InMemoryUploadedFile'''
 
 # KAMUS
 def svd(matriksawal, k):
@@ -79,7 +76,7 @@ def banyaknyaKdigunakan(matriksawal,rasio):
         total = baris
     else :
         total = kolom
-    digunakan = round((1-rasio/100)*total)
+    digunakan = round((rasio/100)*total)
     return digunakan
 
 def gambartomatriks(gambarawal):
@@ -171,13 +168,35 @@ def kompresgambargrey(matriksawal, rasio, transparan):
     hasilgambar = matrikstogambar(matrikshasil)
     return hasilgambar
 
+def selisihbytes(gambarawal, gambarakhir):
+    bytesawal = io.BytesIO()
+    gambarawal.save(bytesawal, 'png')
+    bytesakhir = io.BytesIO()
+    gambarakhir.save(bytesakhir, 'png')
+    #print("ukuran gambar awal adalah", bytesawal.tell(), "bytes")
+    #print("ukuran gambar akhir adalah", bytesakhir.tell(), "bytes")
+    #print("Persentase perubahan pixel adalah", abs(bytesawal.tell() - bytesakhir.tell())*100/bytesawal.tell(), "persen")
+    persenselisih = abs(bytesawal.tell() - bytesakhir.tell())*100/bytesawal.tell()
+    return persenselisih
+
+def selisihpixel(gambarawal,gambarakhir):
+    if gambarawal.mode == 'P' or gambarawal.mode == 'PA':
+        gambarakhir = gambarakhir.convert('RGBA')
+        gambarawal = gambarawal.convert('RGBA')
+    selisih = ImageChops.difference(gambarawal, gambarakhir)
+    selisih.show()
+    selisihmatrix = numpy.array(selisih)
+    if (gambarawal.mode == 'L'):
+        persenselisih = selisihmatrix.sum()*100/(selisihmatrix.shape[0]*selisihmatrix.shape[1]*255)
+    elif (gambarawal.mode == 'LA' ):
+        persenselisih = selisihmatrix[:,:,0].sum()*100/(selisihmatrix.shape[0]*selisihmatrix.shape[1]*255)
+    else :
+        persenselisih = selisihmatrix[:,:,0:3].sum()*100/(selisihmatrix.shape[0]*selisihmatrix.shape[1]*255*3)
+    return persenselisih
 # ALGORITMA
 
 # print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
 def main(gambar,ratio):
-    # KALAU BUKANYA DARI URL :
-    '''response = requests.get(url)
-    #gambarawal = Image.open(BytesIO(response.content)) INI CONVERT URL JADI GAMBAR '''
     gambarawal = Image.open(gambar)# ini yang secara manual, bisa dihapus nanti
     modeP, modePA, matriksawal = gambartomatriks(gambarawal) # convert gambarnya jadi matriks
 
@@ -198,24 +217,16 @@ def main(gambar,ratio):
     elif (matriksawal.ndim == 2) : # KASUS L 
             gambarakhir = kompresgambargrey(matriksawal,rasio, False)
 
-    # gambarakhir.show()
-    # MENYIMPAN HASILNYA KE file django?
-    # hasilIO = StringIO()
-    # gambarakhir.save(hasilIO, "PNG")
-    # filehasil = inMemoryUploadedFile(hasilIO, None, 'compressed.png' , hasilIO.len, None)
+    #persenselisih = selisihbytes(gambarawal,gambarakhir)
+    #persenselisih = selisihpixel(gambarawal, gambarakhir)
 
     buffered = BytesIO()
     gambarakhir.save(buffered, format="PNG")
     img_str = base64.b64encode(buffered.getvalue())
-    #print(modeawal)
-    #print(gambarakhir.mode)
-    #print(gambarawal.size)
-    #print(gambarakhir.size)
     waktuakhir = time.time()
     waktueksekusi = waktuakhir - waktuawal
-    # print("Waktu eksekusi program adalah", waktueksekusi)
+
     return [img_str,waktueksekusi]
-    # print('SEKIAN DARI S4R4PP')
-# a,b = main('./transparan.png',20)
-# print(b)
+
+
 
