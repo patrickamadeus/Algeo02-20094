@@ -8,11 +8,11 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
 
-    <!-- My CSS -->
+    <!-- Our CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='./assets/index.css') }}" />
 
     <!-- Fonts -->
-    <link rel="shortcut icon" href="{{url_for('static', filename='./assets/weblogo.png') }}" />
+    <link rel="shortcut icon" href="{{url_for('static', filename='./assets/logoSARAP.png') }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@500&display=swap" rel="stylesheet">
@@ -21,69 +21,36 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'/>
+    <!-- Linking Div button function -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      $(function() {
+          $('a[href*=\\#]:not([href=\\#])').on('click', function() {
+              var target = $(this.hash);
+              target = target.length ? target : $('[name=' + this.hash.substr(1) +']');
+              if (target.length) {
+                  $('html,body').animate({
+                      scrollTop: target.offset().top
+                  }, 0);
+                  return false;
+              }
+          });
+      });
+      </script>
+
     <title>Image Compressor</title>
   </head>
 
   <body>
-    <div class="container">
+    <div class="container" id = "container">
       <div class="logo">
-        <img src="{{url_for('static', filename='./assets/logoSARAP.png') }}" alt="logo" width="150"/>
+        <img src="{{url_for('static', filename='./assets/logoSARAP.png') }}" alt="logo" width="165"/>
       </div>
       <nav style="margin: 1.3cm;">
-        <button type="button" class = "button-about-us">About Us</button>
+        <a href="#about-us" id = "button-about-us">About Us</a>
       </nav>
     </div>
-    <!-- Navigation Bar -->
-    <!-- <nav> -->
-      <!-- <div class="container">
-
-        <div class="navbar-header">
-          <button class="navbar-toggler" data-toggle="open-navbar1">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-          <a href="#">
-            <h4>Awesome<span>logo</span></h4>
-          </a>
-        </div>
-    
-        <div class="navbar-menu" id="open-navbar1">
-          <ul class="navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li class="navbar-dropdown">
-              <a href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
-                Categories <i class="fa fa-angle-down"></i>
-              </a>
-              <ul class="dropdown" id="my-dropdown-id">
-                <li><a href="#">Actions</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="separator"></li>
-                <li><a href="#">Seprated link</a></li>
-                <li class="separator"></li>
-                <li><a href="#">One more seprated link.</a></li>
-              </ul>
-            </li>
-            <li class="navbar-dropdown">
-              <a href="#" class="dropdown-toggler" data-dropdown="blog">
-                Blog <i class="fa fa-angle-down"></i>
-              </a>
-              <ul class="dropdown" id="blog">
-                <li><a href="#">Some category</a></li>
-                <li><a href="#">Some another category</a></li>
-                <li class="separator"></li>
-                <li><a href="#">Seprated link</a></li>
-                <li class="separator"></li>
-                <li><a href="#">One more seprated link.</a></li>
-              </ul>
-            </li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Signin</a></li>
-          </ul>
-        </div>
-      </div> -->
-    <!-- </nav> -->
 
 
     <br><br>
@@ -102,32 +69,7 @@
     </p> -->
     <!-- <h3>Website ini dibuat untuk melatih kesabaran pengguna!</h3>
     <h5>Oleh karena itu, jangan heran apabila waktu kompresi yang dibutuhkan cukup lama</h5> -->
-    <!-- Upload Image Section -->
-    <div class="image-report">
-      <!-- <h5><strong>Upload Image</strong></h5>
-      <br/> -->
 
-      <!-- <div class = "main-text-side">
-        Algeo20094
-      </div> -->
-
-      <!-- <div class = "form-side">
-        <form id="reportImage" enctype="multipart/form-data" method="POST" action="/result">  
-          <div class="drop-zone">
-            <div class="drop-zone__prompt">Drop image here / click to upload</div>
-            <input type="file" name="imagereport" class="drop-zone__input" id="reportFile" required>
-          </div>
-
-
-          <div id = "compressionSlider">
-            <input type="range" min="0" max="100" value="0" class="compressionrate" id="reportCompression" name = "rate">
-            <p>Compression Rate : <span id="rateShow"></span> %</p>
-          </div>
-          <input class="file_submit" type="Submit">
-            <button type="submit" form="reportImage" data-bs-toggle="modal" data-bs-target="#submitted" id = "upload-button">Upload</button>
-        </form>
-      </div> -->
-    </div>
 
     <!-- COBA COBA LEE -->
   <div id = "form-part">
@@ -159,31 +101,6 @@
   </div>
 
 
-    <!-- <div id="terimakasih" class="modal fade" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-container modal-content">
-          <p>Please insert image!</p>
-          <div>
-            <button id="Kembali" class="button-scan" data-bs-dismiss="modal">Back</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="submitted" class="modal fade" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-container modal-content">
-          <p>Image Successfully Uploaded!</p>
-          <div>
-            <button id="Kembali" class="button-scan" data-bs-dismiss="modal">Back</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <br> -->
-    <!-- <div id = "warning">
-      Tipe file salah
-    </div> -->
     {% if text %}
       <h2>{{ text }} </h2>
     {% endif %}
@@ -208,29 +125,65 @@
         </div>
       </div>
       
-      <div class="row">
-        <div class="column">
-          <!-- {% if basename %} -->
+      <div class="row-image">
+        <div class="column-image">
             <img src="data:image/png;base64,{{ basename }}" style="width: 75%;" alt = "Before" id = "before-image">
-          <!-- {% endif %} -->
         </div>
-        <div class="column">
-          <!-- {% if filename %} -->
+        <div class="column-image">
             <img src="data:image/png;base64,{{ filename }}" style="width: 75%;" alt = "After" id = "after-image">
-          <!-- {% endif %} -->
         </div>
       </div>
     </div>
 
+    {% if filename %}
       <div id = "download-button">
         <button id = "download">Download Result</button>
       </div>
+    {% endif %}
 
       <div id = "about-us" class="about-us">
-        <div class = "card top" data-aos="fade-right"></div> <br>
-        <div class = "card mid" data-aos="fade-left"></div> <br>
-        <div class = "card top" data-aos="fade-right"></div> <br>
+        <h1 style="margin: 5cm 0 3cm 0; font-weight: lighter;color: #1b4d89;">About Us</h1>
+
+        <div class="row-ab top" data-aos="fade-right">
+          <div class="column-ab">
+            <img src="{{url_for('static', filename='./assets/saul.jpg') }}" alt="no" width="350">
+          </div>
+          <div class="column-ab">
+            <h1 style="font-size: 3rem;">Saul Sayers</h1>
+            <p>Some text..</p>
+          </div>
+        </div> 
+
+        <br><br>
+
+        <div class="row-ab mid" data-aos="fade-left">
+          <div class="column-ab">
+            <h1 style="font-size: 3rem;">Patrick Amadeus</h1>
+            <p>Some text..</p>
+          </div>
+          <div class="column-ab">
+            <img src="{{url_for('static', filename='./assets/patrick.jpg') }}" alt="no" width="350">
+          </div>
+        </div>
+
+        <br><br>
+
+        <div class="row-ab top" data-aos="fade-right">
+          <div class="column-ab">
+            <img src="{{url_for('static', filename='./assets/rania.jpg') }}" alt="no" width="400">
+          </div>
+          <div class="column-ab">
+            <h1 style="font-size: 3rem;">Epi</h1>
+            <p>Some text..</p>
+          </div>
+        </div>
       </div>
+
+
+      <a href="#container" id = "button-about-us">⟪  Back To top  ⟫</a>
+
+      <br>
+      <br>
 
 
     <!-- JS SCRIPT -->

@@ -25,30 +25,27 @@ def home():
  
 @app.route('/', methods=['POST'])
 def upload_image():
-    if 'file' not in request.files:
-        flash('No file part')
-        return redirect(request.url) 
+    #get File dan Rate dari form submission
     file = request.files['file']
     rate = request.form['rate']
-    if file.filename == '':
-        flash('No image selected for uploading')
-        return redirect(request.url)
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        basename = filename + "-ori"
-        text = "Compression process for " + filename + " finished"
 
-        #save image original
-        ori_image = Image.open(file)
-        data = io.BytesIO()
-        ori_image.save(data,"PNG")
-        encoded_ori_image = base64.b64encode(data.getvalue())
+    #penamaan file
+    filename = secure_filename(file.filename)
+    basename = filename + "-ori"
 
-        #save compressed image via main function from compress.py
-        encoded_image, secs = main(file, int(rate))
+    #save image original
+    ori_image = Image.open(file)
+    data = io.BytesIO()
+    ori_image.save(data,"PNG")
+    encoded_ori_image = base64.b64encode(data.getvalue())
 
-        flash(rate + ' % compressed in '+str(round(secs,3))+' s')
-        return render_template('index.html', filename=encoded_image.decode('utf-8'), basename = encoded_ori_image.decode('utf-8'), text=text)
+    #save compressed image via main function from compress.py
+    encoded_image, secs = main(file, int(rate))
+
+    #String yang akan di-render ke HTML page
+    text = "Compression process for " + filename + " finished in " + str(round(secs,3)) + " s"
+    flash(rate + ' % compressed in '+str(round(secs,3))+' s')
+    return render_template('index.html', filename=encoded_image.decode('utf-8'), basename = encoded_ori_image.decode('utf-8'), text=text)
 
 
 if __name__ == '__main__':
