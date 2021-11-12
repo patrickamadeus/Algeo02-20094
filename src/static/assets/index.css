@@ -292,16 +292,15 @@ body {
   opacity: 0;
   height: 0;
   overflow: hidden;
-  transition: all 1s ease-in-out;
+  transition: all 0.75s ease-in-out;
 }
 
 #compression-result.show {
   opacity: 1;
   height: 15cm;
-  transition: all 1s ease-in-out;
+  transition: all 0.75s ease-in-out;
   margin-bottom: 50px;
 }
-
 
 #show-button {
   text-align: center;

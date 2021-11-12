@@ -62,8 +62,8 @@
 
     <!-- COBA COBA LEE -->
   <div id = "form-part">
-    <form method="post" action="/" enctype="multipart/form-data" id = "main-form">
-      <input type="file" name="file" class="form-control" autocomplete="off" id = "file" required>
+    <form method="post" action="/" enctype="multipart/form-data" id = "main-form" onsubmit= "resultShow()">
+      <input type="file" name="file" class="form-control" autocomplete="off" id = "file" accept = ".png, .jpg, .jpeg, .svg"required >
       <br>
       <input type="range" min="0" max="100" value="0" class="compressionrate"  name = "rate" id = "reportCompression">
       <p>Compression Rate : <span id="rateShow"></span> %</p>
@@ -96,22 +96,26 @@
       </div>
     </div>
     <br> -->
+    <!-- <div id = "warning">
+      Tipe file salah
+    </div> -->
     {% if text %}
       <h2>{{ text }} </h2>
     {% endif %}
 
-
-    <button id = "show-button">Toggle Show Result</button>
+    {% if filename %}
+      <button id = "show-button">Toggle Show Result</button>
+    {% endif %}
     <div id="compression-result">
       <div class="row">
         <div class="column">
-          <h2>Original</h2>
+          <h4>Original</h4>
         </div>
         <div class="column">
           {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
-              <h3>{{ message }}</h3>
+              <h4>{{ message }}</h4>
             {% endfor %}
           {% endif %}
         {% endwith %}
@@ -121,14 +125,14 @@
       
       <div class="row">
         <div class="column">
-          {% if basename %}
-            <img src="{{ url_for('display_image', filename=basename) }}" style="width: 75%;" alt = "Before" id = "before-image">
-          {% endif %}
+          <!-- {% if basename %} -->
+            <img src="data:image/png;base64,{{ basename }}" style="width: 75%;" alt = "Before" id = "before-image">
+          <!-- {% endif %} -->
         </div>
         <div class="column">
-          {% if filename %}
-            <img src="{{ url_for('display_image', filename=filename) }}" style="width: 75%;" alt = "After" id = "after-image">
-          {% endif %}
+          <!-- {% if filename %} -->
+            <img src="data:image/png;base64,{{ filename }}" style="width: 75%;" alt = "After" id = "after-image">
+          <!-- {% endif %} -->
         </div>
       </div>
     </div>

@@ -12,8 +12,6 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'static/assets/'
  
 app.secret_key = "secret key"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
  
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
  
@@ -41,42 +39,17 @@ def upload_image():
         text = "Compression process for " + filename + " finished"
 
         #save image original
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], basename))
-        #main process on compressing image
-        img_str, secs = main(file, int(rate))
+        ori_image = Image.open(file)
+        data = io.BytesIO()
+        ori_image.save(data,"PNG")
+        encoded_ori_image = base64.b64encode(data.getvalue())
 
-        #decode base64 jadi image lagi
-        image = base64.b64decode(img_str)       
-        img = Image.open(io.BytesIO(image))
+        #save compressed image via main function from compress.py
+        encoded_image, secs = main(file, int(rate))
 
-        img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         flash(rate + ' % compressed in '+str(round(secs,3))+' s')
-        return render_template('index.html', filename=filename, basename = basename, text=text)
-    else:
-        flash('Allowed image types are - png, jpg, jpeg, gif')
-        return redirect(request.url)
- 
-@app.route('/display/<filename>')
-def display_image(filename):
-    #print('display_image filename: ' + filename)
-    return redirect(url_for('static', filename='assets/' + filename), code=301)
-# @app.route('/')
-# def index():
-#     return render_template("index.html")
+        return render_template('index.html', filename=encoded_image.decode('utf-8'), basename = encoded_ori_image.decode('utf-8'), text=text)
 
-# @app.route('/result', methods= ['POST','GET'])
-# def result():
-#     rate = request.form.to_dict()
-#     print(post)
-#     new = rate['post']
-#     return render_template('index.html',rate = new)
-
-# @app.route('/getresult', methods= ['POST','GET'])
-# def resulttest():
-#     data = request.form.to_dict()
-#     print(data)
-#     new = data['rate']
-#     return render_template('index.html',post = new)
 
 if __name__ == '__main__':
     app.run(debug = True)

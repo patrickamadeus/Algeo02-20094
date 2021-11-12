@@ -118,6 +118,36 @@
   //   }
   // };
 
+  //main-form submission section
+  // const mainForm = document.getElementById("main-form");
+
+  // function resultShow() {
+  //   const inputFiles = document.getElementById("file");
+  //   const warningSign = document.getElementById("warning");
+  //   const showButton = document.getElementById("show-button");
+
+  //   if (inputFiles.files[0] !== undefined && inputFiles.files[0].type.startsWith("image/")){
+  //       if (warningSign.style.display !== "none"){
+  //         warningSign.style.display = "none";
+  //       }
+
+  //       if (showButton.style.display !== "initial"){
+  //         warningSign.style.display = "initial";
+  //       }
+  //   }
+  //   else{
+  //     if (warningSign.style.display !== "initial"){
+  //       warningSign.style.display = "initial";
+  //     }
+
+  //     if (showButton.style.display !== "none"){
+  //       warningSign.style.display = "none";
+  //     }
+  //   }
+  // }
+
+
+
 
   //toggle show result section
   const targetDiv = document.getElementById("compression-result");
