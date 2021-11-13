@@ -26,8 +26,9 @@ def upload_image():
 
     #save image original
     ori_image = Image.open(file)
+    img_format = ori_image.format
     data = io.BytesIO()
-    ori_image.save(data,"PNG")
+    ori_image.save(data,img_format)
     encoded_ori_image = base64.b64encode(data.getvalue())
 
     #save compressed image via main function from compress.py
@@ -35,8 +36,8 @@ def upload_image():
 
     #String yang akan di-render ke HTML page
     text = "Compression process for " + filename + " finished in " + str(round(secs,3)) + " s"
-    flash(rate + ' % compressed in '+str(round(secs,3))+' s')
-    return render_template('index.html', filename=encoded_image.decode('utf-8'), basename = encoded_ori_image.decode('utf-8'),percent = percent, text=text)
+    flash(rate + ' % compressed')
+    return render_template('index.html', filename=encoded_image.decode('utf-8'), basename = encoded_ori_image.decode('utf-8'),percent = percent, text=text, img_format= img_format)
 
 
 if __name__ == '__main__':

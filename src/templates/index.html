@@ -128,10 +128,10 @@
       
       <div class="row-image">
         <div class="column-image">
-            <img src="data:image/png;base64,{{ basename }}" style="width: 75%;" alt = "Before" id = "before-image">
+            <img src="data:image/{{ img_format }};base64,{{ basename }}" style="width: 75%;" alt = "Before" id = "before-image">
         </div>
         <div class="column-image">
-            <img src="data:image/png;base64,{{ filename }}" style="width: 75%;" alt = "After" id = "after-image">
+            <img src="data:image/{{ img_format }};base64,{{ filename }}" style="width: 75%;" alt = "After" id = "after-image">
         </div>
       </div>
     </div>
