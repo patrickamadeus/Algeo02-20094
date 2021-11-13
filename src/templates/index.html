@@ -56,17 +56,10 @@
     <br><br>
 
 
-    <h1 
-        style="font-size: 5rem; font-weight: 900; color: #f9e45b;text-shadow: -1px 5px 0 #1b4d89,
-        1px 1px 0 #1b4d89,
-      1px -1px 0 #1b4d89,
-      -1px -1px 0 #1b4d89; ">
+    <h1 id = "h1-main">
       SVD
     </h1>
-    <h2 style="color: #f9e45b; font-size: 3rem; margin-left: 2cm;text-shadow: -1px 5px 0 #1b4d89,
-    1px 1px 0 #1b4d89,
-   1px -1px 0 #1b4d89,
-  -1px -1px 0 #1b4d89;">
+    <h2 id = "h2-main">
       Image Compressor 
       <span style="font-size: 1rem; color: #1b4d89; opacity: 0.75; text-shadow: none;">by S4RaP</span>
     </h2>
@@ -145,11 +138,11 @@
     {% endif %}
 
       <div id = "about-us" class="about-us">
-        <h1 style="margin: 5cm 0 3cm 0; font-weight: lighter;color: #1b4d89; ">About Us</h1>
+        <h1 style="margin: 5cm 0 3cm 0; font-weight: lighter;color: #1b4d89; " class = "main-about-us">About Us</h1>
 
         <div class="row-ab top" data-aos="fade-right">
           <div class="column-ab">
-            <img src="{{url_for('static', filename='./assets/saul.jpg') }}" class = "profile-left" alt="no" width="350">
+            <img src="{{url_for('static', filename='./assets/saul.jpg') }}" class = "profile-left" alt="no" width="400">
           </div>
           <div class="column-ab">
             <h1 style="font-size: 3rem;">Saul Sayers</h1>
