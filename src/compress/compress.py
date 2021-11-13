@@ -71,7 +71,7 @@ def banyaknyaKdigunakan(matriksawal,rasio):
     # Parameter : matriks dan integer
     # Return : integer
 
-    baris, kolom = matriksawal.shape[0], matriksawal.shape[1], 
+    baris, kolom = matriksawal.shape[0], matriksawal.shape[1] 
     if baris < kolom :
         total = baris
     else :
@@ -123,6 +123,10 @@ def buangpixelsisa(matrikshasil, berwarna) :
                     matrikshasil[baris,kolom,2] = 0
     return matrikshasil
 
+def perubahanpixel(matriksawal,k) : #ALGORITMA DIDAPATKAN DARI QNA FAQ ALGEO NOMOR 6
+    baris, kolom = matriksawal.shape[0], matriksawal.shape[1]
+    persenselisih = 100*(baris*k + k + kolom*k)/(baris*kolom)
+    return persenselisih
 
 # TLDR : ini ngambil matriks dari sebuah gambar, pake SVD, singular values dari matriks nya cuman dipake beberapa bergantung rasio
 # Trus matriksnya dikaliin lagi, diconvert balik jadi gambar. Trus ngereturn gambar hasil, banyaknya singular values, singular values digunakan
@@ -145,7 +149,8 @@ def kompresgambarwarna(matriksawal, rasio,transparan):
         matrikshasil[:,:,3] = matriksawal[:,:,3]
         matrikshasil = buangpixelsisa(matrikshasil,True)
     hasilgambar = matrikstogambar(matrikshasil)
-    return hasilgambar
+    persenselisih = perubahanpixel(matrikshasil,k)
+    return hasilgambar, persenselisih
 
 def kompresgambargrey(matriksawal, rasio, transparan):
     # Fungsi untuk melakukan kompresi gambar L (untuk kasus tidak transparan) dan LA (untuk kasus transparan)
@@ -166,9 +171,10 @@ def kompresgambargrey(matriksawal, rasio, transparan):
     else :
         matrikshasil = kiri[:, 0:k] @ tengah[0:k,0:k] @ kanan[0:k,:] #mengalikan kembali matriksnya kalau tidak transparan
     hasilgambar = matrikstogambar(matrikshasil)
-    return hasilgambar
+    persenselisih = perubahanpixel(matrikshasil,k)
+    return hasilgambar, persenselisih
 
-def selisihbytes(gambarawal, gambarakhir):
+def selisihbytes(gambarawal, gambarakhir): # MENGECEK PERBEDAANNYA DARI SELISIH BYTES
     bytesawal = io.BytesIO()
     gambarawal.save(bytesawal, 'png')
     bytesakhir = io.BytesIO()
@@ -179,7 +185,7 @@ def selisihbytes(gambarawal, gambarakhir):
     persenselisih = abs(bytesawal.tell() - bytesakhir.tell())*100/bytesawal.tell()
     return persenselisih
 
-def selisihpixel(gambarawal,gambarakhir):
+def selisihpixel(gambarawal,gambarakhir): #ALGORITMA DIDAPAT BERDASARKAN SELISIH PIXEL LALU DIBAGI DENGAN MAKSIMAL
     if gambarawal.mode == 'P' or gambarawal.mode == 'PA':
         gambarakhir = gambarakhir.convert('RGBA')
         gambarawal = gambarawal.convert('RGBA')
@@ -193,6 +199,8 @@ def selisihpixel(gambarawal,gambarakhir):
     else :
         persenselisih = selisihmatrix[:,:,0:3].sum()*100/(selisihmatrix.shape[0]*selisihmatrix.shape[1]*255*3)
     return persenselisih
+    
+
 # ALGORITMA
 
 # print("SELAMAT DATANG DI PROGRAM COMPRESSION K32 SARAP")
@@ -205,17 +213,17 @@ def main(gambar,ratio):
 
     if (matriksawal.ndim == 3) : 
         if (matriksawal.shape[2] == 3) : # KASUS RGB 
-            gambarakhir = kompresgambarwarna(matriksawal, rasio,False) 
+            gambarakhir,persenselisih = kompresgambarwarna(matriksawal, rasio,False) 
         elif (matriksawal.shape[2] == 4) : # KASUS RGBA 
-            gambarakhir = kompresgambarwarna(matriksawal, rasio,True) 
+            gambarakhir,persenselisih = kompresgambarwarna(matriksawal, rasio,True) 
         elif (matriksawal.shape[2] == 2) : # KASUS LA
-            gambarakhir = kompresgambargrey(matriksawal, rasio, True) 
+            gambarakhir,persenselisih = kompresgambargrey(matriksawal, rasio, True) 
         if (modeP) :
             gambarakhir = gambarakhir.convert('P') # KASUS P DICONVERT BALIK
         if (modePA) :
             gambarakhir = gambarakhir.convert('PA') # KASUS PA DICONVERT BALIK
     elif (matriksawal.ndim == 2) : # KASUS L 
-            gambarakhir = kompresgambargrey(matriksawal,rasio, False)
+            gambarakhir,persenselisih = kompresgambargrey(matriksawal,rasio, False)
 
     #persenselisih = selisihbytes(gambarawal,gambarakhir)
     #persenselisih = selisihpixel(gambarawal, gambarakhir)
@@ -229,8 +237,8 @@ def main(gambar,ratio):
     waktuakhir = time.time()
     waktueksekusi = waktuakhir - waktuawal
 
-    #get persenselisih
-    persenselisih = round(selisihpixel(gambarawal, gambarakhir),3)
+    #round persenselisih
+    persenselisih = round(persenselisih,3)
 
     return [img_str,waktueksekusi,persenselisih]
 
