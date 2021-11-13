@@ -398,3 +398,17 @@ body {
   display: table;
   clear: both;
 }
+
+.profile-left{
+  box-shadow: -7px 10px 0 #1b4d89,
+                1px 1px 0 #1b4d89,
+              1px -1px 0 #1b4d89,
+              -1px -1px 0 #1b4d89;
+}
+
+.profile-right{
+  box-shadow: 7px 10px 0 #1b4d89,
+                1px 1px 0 #1b4d89,
+              1px -1px 0 #1b4d89,
+              -1px -1px 0 #1b4d89;
+}
