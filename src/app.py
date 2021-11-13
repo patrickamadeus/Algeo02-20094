@@ -22,7 +22,6 @@ def upload_image():
 
     #penamaan file
     filename = secure_filename(file.filename)
-    basename = filename + "-ori"
 
     #save image original
     ori_image = Image.open(file)

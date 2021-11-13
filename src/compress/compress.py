@@ -230,17 +230,14 @@ def main(gambar,ratio):
 
     #get base64 img string
     buffered = BytesIO()
-    gambarakhir.save(buffered, format="PNG")
+    gambarakhir.save(buffered, format=gambarawal.format)
     img_str = base64.b64encode(buffered.getvalue())
 
     #get Waktu Pemrosesan
     waktuakhir = time.time()
     waktueksekusi = waktuakhir - waktuawal
 
-    #round persenselisih
-    persenselisih = round(persenselisih,3)
-
-    return [img_str,waktueksekusi,persenselisih]
+    return [img_str,waktueksekusi,round(persenselisih,3)]
 
 
 
