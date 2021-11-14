@@ -111,7 +111,7 @@ def buangpixelsisa(matrikshasil, berwarna) :
     # Return : matriks
 
     if (berwarna):
-        indekstransparansi = 3 #kalau RGBA, A ada di indeks 3. kalau LA, A ada di indeks 1
+        indekstransparansi = 3 #kalau RGBA/CMYK, layer transparansi ada di indeks 3. kalau LA, ada di indeks 1
     else :
         indekstransparansi = 1
     for baris in range(matrikshasil.shape[0]) :
@@ -132,7 +132,7 @@ def perubahanpixel(matriksawal,k) : #ALGORITMA DIDAPATKAN DARI QNA FAQ ALGEO NOM
 # Trus matriksnya dikaliin lagi, diconvert balik jadi gambar. Trus ngereturn gambar hasil, banyaknya singular values, singular values digunakan
 
 def kompresgambarwarna(matriksawal, rasio,transparan):
-    # Fungsi untuk melakukan kompresi gambar RGB (untuk kasus tidak transparan) dan RGBA (untuk kasus transparan)
+    # Fungsi untuk melakukan kompresi gambar RGB (untuk kasus tidak transparan), RGBA (untuk kasus transparan), CMYK
     # Parameter : matriks, integer, dan boolean
     # Return : gambar
 
@@ -214,7 +214,7 @@ def main(gambar,ratio):
     if (matriksawal.ndim == 3) : 
         if (matriksawal.shape[2] == 3) : # KASUS RGB 
             gambarakhir,persenselisih = kompresgambarwarna(matriksawal, rasio,False) 
-        elif (matriksawal.shape[2] == 4) : # KASUS RGBA 
+        elif (matriksawal.shape[2] == 4) : # KASUS RGBA DAN CMYK
             gambarakhir,persenselisih = kompresgambarwarna(matriksawal, rasio,True) 
         elif (matriksawal.shape[2] == 2) : # KASUS LA
             gambarakhir,persenselisih = kompresgambargrey(matriksawal, rasio, True) 

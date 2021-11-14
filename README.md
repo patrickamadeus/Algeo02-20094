@@ -70,13 +70,24 @@ Algeo02-20094/
 ```
 
 ## Screenshots
-<!-- ![Example screenshot](./img/screenshot.png) -->
-<!-- If you have screenshots you'd like to share, include them here. -->
+![home](./doc/home.png)
+![document](./doc/results.png)
+![about](./doc/aboutus.png)
 
 
 ## Setup
-<!-- isi apa yang harus dilakuin buat setup -->
+### Instalasi Numpy
+Prerequisites : pip sudah terinstall pada komputer anda
 
+Pada terminal, jalankan command berikut
+```
+pip install numpy
+```
+### Instalasi PIL
+Pada terminal, jalankan command berikut
+```
+pip install numpy
+```
 
 ## Usage
 Tanpa banyak basa-basi, yuk coba pake *website* buatan kita!
