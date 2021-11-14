@@ -89,7 +89,7 @@ pip install numpy
 ### Instalasi PIL
 Pada terminal, jalankan command berikut
 ```
-pip install numpy
+pip install pillow
 ```
 
 ## Usage
