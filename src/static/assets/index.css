@@ -26,7 +26,6 @@ body {
   }
 
   #h2-main{
-    /* display: table-caption; */
     color: #f9e45b; font-size: 3rem; margin-left: 2cm;text-shadow: -1px 3px 0 #1b4d89,
     1px 1px 0 #1b4d89,
    1px -1px 0 #1b4d89,
@@ -51,7 +50,6 @@ transition: all ease 0.4s;
   .container{
     clear:both;
     overflow:auto;
-    /* border-bottom-style: inset; */
   }
   
   nav{float:right;}
@@ -117,94 +115,6 @@ transition: all ease 0.4s;
     margin-bottom: 10px;
   }
   
-  /* Report Gambar */
-  .image-report {
-    margin: 0% 4% 5% 4%;
-  }
-  
-  .image-report h5 {
-    text-align: right;
-    margin-right: 8cm;
-    margin-top: 1cm;
-  }
-  
-  .drop-zone {
-    width: 40%;
-    height: 400px;
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-left: 20cm;
-    cursor: pointer;
-    color: #9b9b9b;
-    border: 3px dashed #afafaf;
-    border-radius: 15px;
-    background-color: white;
-  }
-  
-  .drop-zone__input {
-    display: none;
-  }
-  
-  .drop-zone__thumb {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    overflow: hidden;
-    background-color: #cccccc;
-    background-size: cover;
-    position: relative;
-  }
-  
-  .drop-zone__thumb::after {
-    content: attr(data-label);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 5px 0;
-    color: #ffffff;
-    background: rgba(0, 0, 0, 0.75);
-    font-size: 14px;
-    text-align: center;
-  }
-  
-  .image-report form button:hover {
-    background: #363636;
-    box-shadow: 5px 10px 30px rgba(73, 73, 73, 0.911);
-    transition: all ease 0.4s;
-  }
-  
-  .image-report form button:active {
-    border: 0;
-  }
-  
-  
-  .button-scan {
-    text-align: center;
-    color: #fff;
-    background: #4e4e4e;
-    border: none;
-    width: 120px;
-    height: 45px;
-    margin-top: 15px;
-    border-radius: 10px;
-    transition: all 0.2s ease;
-    outline: none;
-  }
-  
-  .button-scan:hover {
-    background: #2e2e2e;
-    box-shadow: 5px 10px 30px rgba(32, 32, 32, 0.911);
-    transition: all ease 0.4s;
-  }
-  
-  .button-scan:active {
-    border: 0;
-  }
-  
   /* Footer */
   footer {
     width: 100%;
@@ -214,13 +124,11 @@ transition: all ease 0.4s;
     padding: 0px 5%;
     border-top: 2px solid #1b4d89;
     background-color: #1b4d89;
-    /* position: fixed; */
     bottom: 0;
     padding: 0 20px 0 20px;
   }
   
  footer div{
-    /* font-size: 0.75rem; */
     text-decoration: none;
     color: rgba(189, 189, 189, 0.911);
     padding : 10px;
@@ -259,19 +167,9 @@ transition: all ease 0.4s;
   }
   
 
-
-  /*Section Slider  + Upload Button */
-
-/* .main-text-side {
-  padding:30px;
-  width: 30%;
-} */
-
 #form-part {
   margin: 0 5cm 2cm 5cm;
   padding: 1cm 2cm 1cm 2cm;
-  /* border: inset;
-  border-color: #1b4d89 ; */
   background : white;
   box-shadow: 0px 0px 20px 10px #1b4d89;
 }
@@ -285,20 +183,6 @@ transition: all ease 0.4s;
   background: #4c7e5c;
   transition: all ease 0.4s;
 }
-
-/* .image-report form button {
-  float: right;
-  text-align: center;
-  color: #fff;
-  background: #747474;
-  border: none;
-  width: 120px;
-  height: 45px;
-  margin : 15px 3cm 0 0;
-  border-radius: 10px;
-  transition: all 0.2s ease;
-  outline: none;
-} */
 
 #compressionSlider {
   width : 25%;
@@ -369,14 +253,12 @@ transition: all ease 0.4s;
   padding: 5px;
 }
 
-/* Clear floats after image containers */
 .row-image::after {
   content: "";
   clear: both;
   display: table;
 }
 
-/* Main download button */
 #download-button{
   display: block;
   margin-bottom: 3cm;
@@ -457,8 +339,6 @@ transition: all ease 0.4s;
   box-sizing: border-box;
 }
 
-
-/* Create two equal columns that floats next to each other */
 .column-ab {
   background-color: transparent;
   float: left;
@@ -478,10 +358,6 @@ transition: all ease 0.4s;
 }
 
 .profile-left:hover{
-  /* box-shadow: -10px 10px 0 #1b4d89,
-                1px 1px 0 #1b4d89,
-              1px -1px 0 #1b4d89,
-              -1px -1px 0 #1b4d89; */
     box-shadow: 0 6px 1px rgba(0,0,0,.1),
                 0 0 5px rgba(0,0,0,.1),
                 0 1px 3px rgba(0,0,0,.3),
@@ -493,10 +369,18 @@ transition: all ease 0.4s;
 }
 
 .profile-right{
-  box-shadow: 10px 10px 0 #1b4d89,
-                1px 1px 0 #1b4d89,
-              1px -1px 0 #1b4d89,
-              -1px -1px 0 #1b4d89;
+  transition: all ease 0.4s;
+}
+
+.profile-right:hover{
+    box-shadow: 0 6px 1px rgba(0,0,0,.1),
+                0 0 5px rgba(0,0,0,.1),
+                0 1px 3px rgba(0,0,0,.3),
+                0 3px 10px rgba(0,0,0,.2),
+                0 5px 15px rgba(0,0,0,.25),
+                0 10px 25px rgba(0,0,0,.2),
+                0 50px 40px rgba(0,0,0,.15);
+                transition: all ease 0.4s;
 }
 
 
