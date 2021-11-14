@@ -32,7 +32,7 @@ Sedangkan, output yang diberikan oleh *website* adalah :
 
 
 ## Programming Language
-- [_Python_](https://www.python.org/downloads/)
+- [Python](https://www.python.org/downloads/)
 - Java Script
 - CSS
 - HTML
@@ -53,10 +53,37 @@ Oleh karena itu, apabila ingin menggunakan *website* ini, jangan lupa untuk meng
 ## Usage
 Tanpa banyak basa-basi, yuk coba pake *website* buatan kita!
 
-```
-git clone https://github.com/patrickamadeus/Algeo02-20094.git
-cd src
-python app.py
-```
+1. Clone repository kami dengan mengetikkan command berikan pada directory yang Anda inginkan
 
-Kemudian, akan muncul sebuah link dan kamu tinggal menekan <ctrl> sambil mengarahkan kursor ke link tersebut dan **VOILA!!**, web akan terbuka dan siap untuk digunakan!
+    ```
+    git clone https://github.com/patrickamadeus/Algeo02-20094.git
+    ```
+2. Buka repository yang telah di-clone pada `cmd` / IDE kesayangan Anda, kemudian masuk ke dalam folder `src` dengan command berikut
+    ```
+    cd src
+    ```
+    Contoh tampilan :
+    ```
+    PS C:\Users\HP\Desktop\Algeo02-20094> cd src
+    PS C:\Users\HP\Desktop\Algeo02-20094\src> 
+    ```
+
+3. Setelah masuk ke folder `src` Anda dapat menjalankan Flask App dengan mengetikkan command berikut
+    ```
+    python app.py
+    ```
+    Contoh tampilan  :
+    ```
+    PS C:\Users\HP\Desktop\Algeo02-20094\src> python app.py
+    * Serving Flask app 'app' (lazy loading)
+    * Environment: production
+    WARNING: This is a development server. Do not use it in a production deployment.
+    Use a production WSGI server instead.
+    * Debug mode: on
+    * Restarting with stat
+    * Debugger is active!
+    * Debugger PIN: XXX-XXX-XXX
+    * Running on [ADDRESS] (Press CTRL+C to quit)
+    ```
+
+Kemudian, akan muncul sebuah link pada bagian `[ADDRESS]` dan kamu tinggal menekan `ctrl` sambil mengarahkan kursor ke link tersebut dan **VOILA!!**, web akan terbuka dan siap untuk digunakan!

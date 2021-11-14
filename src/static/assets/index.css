@@ -317,14 +317,13 @@ transition: all ease 0.4s;
   opacity: 0;
   height: 0;
   overflow: hidden;
-  transition: all 0.75s ease-in-out;
+  transition: all ease 0.5s;
 }
 
 #compression-result.show {
   opacity: 1;
-  height: 20cm;
-  overflow: hidden;
-  transition: all 0.75s ease-in-out;
+  height: max-content;
+  transition: all ease 0.5s;
   margin-bottom: 50px;
 }
 
