@@ -12,6 +12,7 @@ Repository berisi website ini dibuat untuk memenuhi **Tugas Besar Mata Kuliah IF
 * [Overview](#overview)
 * [Programming Language](#programming-language)
 * [Framework](#framework)
+* [File Directory](#file-directory)
 * [Screenshots](#screenshots)
 * [Setup](#setup)
 * [Usage](#usage)
@@ -40,6 +41,33 @@ Sedangkan, output yang diberikan oleh *website* adalah :
 ## Framework
 Untuk membuat *front end* dan *back end website* ini, kami menggunakan *framework* Flask.\
 Oleh karena itu, apabila ingin menggunakan *website* ini, jangan lupa untuk mengunduh Flask terlebih dahulu.
+
+## File Directory
+```
+Algeo02-20094/ 
+├─ src/ 
+│  ├─ compress/ 
+│  │  ├─ compress.py 
+│  │  ├─ compresssvdver2.py 
+│  ├─ static/ 
+│  │  ├─ assets/ 
+│  │  │  ├─ 3ver4.svg 
+│  │  │  ├─ logoSARAP.png 
+│  │  │  ├─ index.css 
+│  │  │  ├─ patrick.jpg 
+│  │  │  ├─ rania.jpg 
+│  │  │  ├─ saul.jpg 
+│  │  ├─ FileSaver.js 
+│  │  ├─ index.js 
+│  ├─ templates/ 
+│  │  ├─ index.html 
+│  ├─ app.py 
+├─ doc/ 
+│  ├─ Laporan Tugas Besar 2 Algeo Kelompok 32 
+├─ test/ 
+│  ├─ grey.png 
+├─ README.md 
+```
 
 ## Screenshots
 <!-- ![Example screenshot](./img/screenshot.png) -->
