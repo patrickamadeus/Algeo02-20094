@@ -64,6 +64,9 @@ Algeo02-20094/
 │  ├─ app.py 
 ├─ doc/ 
 │  ├─ Laporan Tugas Besar 2 Algeo Kelompok 32 
+│  ├─ aboutus.png 
+│  ├─ home.png
+│  ├─ results.png 
 ├─ test/ 
 │  ├─ grey.png 
 ├─ README.md 
@@ -76,8 +79,8 @@ Algeo02-20094/
 
 
 ## Setup
-### Instalasi Numpy
 Prerequisites : pip sudah terinstall pada komputer anda
+### Instalasi Numpy
 
 Pada terminal, jalankan command berikut
 ```
