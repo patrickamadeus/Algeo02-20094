@@ -206,7 +206,7 @@ transition: all ease 0.4s;
 
 #compression-result.show {
   opacity: 1;
-  height: max-content;
+  height: 15cm;
   transition: all ease 0.5s;
   margin-bottom: 50px;
 }
@@ -249,8 +249,13 @@ transition: all ease 0.4s;
 
 .column-image {
   float: left;
+  height: 15cm;
   width: 50%;
   padding: 5px;
+}
+.column-image img{
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .row-image::after {
@@ -440,7 +445,6 @@ input[type=range]::-ms-track {
   width: 100%;
   height: 10px;
   cursor: pointer;
-  animate: 0.2s;
   background: transparent;
   border-color: transparent;
   color: transparent;
