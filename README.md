@@ -63,7 +63,7 @@ Algeo02-20094/
 │  │  ├─ index.html 
 │  ├─ app.py 
 ├─ doc/ 
-│  ├─ Laporan Tugas Besar 2 Algeo Kelompok 32 
+│  ├─ Algeo02-20094.pdf
 │  ├─ aboutus.png 
 │  ├─ home.png
 │  ├─ results.png 
