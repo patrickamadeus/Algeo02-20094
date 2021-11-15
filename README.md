@@ -68,7 +68,12 @@ Algeo02-20094/
 │  ├─ home.png
 │  ├─ results.png 
 ├─ test/ 
-│  ├─ grey.png 
+│  ├─ birds.png
+│  ├─ jokowi.jpeg
+│  ├─ ngupil.png
+│  ├─ temp.png
+│  ├─ tigers.jpg
+│  ├─ transparan.png 
 ├─ README.md 
 ```
 
